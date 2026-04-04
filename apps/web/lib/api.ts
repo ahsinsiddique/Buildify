@@ -83,6 +83,59 @@ export type DashboardStats = {
   }>;
 };
 
+export type IntelligenceProject = {
+  id: number;
+  name: string;
+  status: string;
+  budget: number;
+  spent: number;
+  progressPercent: number;
+  projectedTotalCost: number;
+  overrunPercent: number;
+  overrunRisk: "low" | "medium" | "high";
+  materialVariancePercent: number;
+  projectedDelayDays: number;
+  suggestions: string[];
+  flags: string[];
+};
+
+export type ProjectIntelligence = {
+  summary: {
+    analyzedProjects: number;
+    flaggedProjects: number;
+    highRiskProjects: number;
+  };
+  projects: IntelligenceProject[];
+};
+
+export type WorkerIntelligence = {
+  id: number;
+  name: string;
+  role: string;
+  dailyWage: number;
+  phone?: string;
+  attendance: {
+    present: number;
+    half: number;
+    absent: number;
+  };
+  earnedSalary: number;
+  productivityScore: number;
+  assignedProjects: Array<{ project_id: number; project_name: string; }>;
+};
+
+export type WorkerIntelligenceData = {
+  summary: {
+    totalWorkers: number;
+    bestWorker: {
+      id: number;
+      name: string;
+      score: number;
+    } | null;
+  };
+  workers: WorkerIntelligence[];
+};
+
 export async function loginUser(payload: AuthPayload) {
   return apiRequest<AuthResponse>("/auth/login", {
     method: "POST",
@@ -104,6 +157,22 @@ export async function registerUser(payload: RegisterPayload) {
 
 export async function fetchDashboardStats(token: string) {
   return apiRequest<DashboardStats>("/dashboard/stats", { token });
+}
+
+export async function fetchProjectIntelligence(token: string) {
+  return apiRequest<ProjectIntelligence>("/dashboard/intelligence", { token });
+}
+
+export async function fetchWorkerIntelligence(token: string) {
+  return apiRequest<WorkerIntelligenceData>("/workers/intelligence", { token });
+}
+
+export async function payWorker(id: string | number, token: string, payload: { amount: number, projectId: number, paymentDate: string }) {
+  return apiRequest(`/workers/${id}/pay`, {
+    method: "POST",
+    token,
+    body: payload as unknown as Record<string, unknown>
+  });
 }
 
 export async function listResource<T>(path: string, token: string) {

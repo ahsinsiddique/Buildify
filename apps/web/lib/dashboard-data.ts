@@ -1,5 +1,7 @@
 export const navigationItems = [
   { href: "/dashboard", label: "Dashboard" },
+  { href: "/dashboard/financial", label: "Financial Overview" },
+  { href: "/dashboard/intelligence", label: "AI Intelligence" },
   { href: "/dashboard/clients", label: "Clients" },
   { href: "/dashboard/properties", label: "Properties" },
   { href: "/dashboard/vendors", label: "Vendors" },

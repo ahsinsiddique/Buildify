@@ -1,6 +1,10 @@
-import { ResourceManager } from "@/components/dashboard/resource-manager";
-import { resourcePages } from "@/lib/resource-pages";
+import { WorkerManagement } from "@/components/dashboard/worker-management";
+
+export const metadata = {
+  title: "Smart Worker Management | Property App",
+  description: "Track attendance, salaries, and productivity.",
+};
 
 export default function WorkersPage() {
-  return <ResourceManager {...resourcePages.workers} />;
+  return <WorkerManagement />;
 }

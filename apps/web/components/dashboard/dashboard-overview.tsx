@@ -14,6 +14,7 @@ import {
 import { useAuth } from "@/components/auth/auth-provider";
 import { DashboardStats, fetchDashboardStats } from "@/lib/api";
 
+import { IntelligencePreview } from "./intelligence-preview";
 import { InsightPanel } from "./insight-panel";
 import { ProjectsTable } from "./projects-table";
 import { StatCard } from "./stat-card";
@@ -133,6 +134,8 @@ export function DashboardOverview() {
 
         <InsightPanel />
       </section>
+
+      <IntelligencePreview />
 
       <ProjectsTable rows={stats.projectCosts} />
     </main>

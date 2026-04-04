@@ -87,6 +87,7 @@ CREATE TABLE IF NOT EXISTS material_usage (
 CREATE TABLE IF NOT EXISTS expenses (
     id SERIAL PRIMARY KEY,
     project_id INT REFERENCES projects(id) ON DELETE SET NULL,
+    worker_id INT REFERENCES workers(id) ON DELETE SET NULL,
     category VARCHAR(100) NOT NULL,
     amount NUMERIC(12, 2) NOT NULL,
     description TEXT,
@@ -148,3 +149,16 @@ CREATE INDEX IF NOT EXISTS idx_payments_invoice_id ON payments(invoice_id);
 CREATE INDEX IF NOT EXISTS idx_project_logs_project_id ON project_logs(project_id);
 CREATE INDEX IF NOT EXISTS idx_consultations_client_id ON consultations(client_id);
 CREATE INDEX IF NOT EXISTS idx_consultations_property_id ON consultations(property_id);
+
+CREATE TABLE IF NOT EXISTS worker_attendance (
+    id SERIAL PRIMARY KEY,
+    worker_id INT REFERENCES workers(id) ON DELETE CASCADE,
+    project_id INT REFERENCES projects(id) ON DELETE SET NULL,
+    attendance_date DATE NOT NULL,
+    status VARCHAR(50) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    UNIQUE(worker_id, attendance_date)
+);
+
+CREATE INDEX IF NOT EXISTS idx_worker_attendance_worker_id ON worker_attendance(worker_id);
+CREATE INDEX IF NOT EXISTS idx_worker_attendance_project_id ON worker_attendance(project_id);
