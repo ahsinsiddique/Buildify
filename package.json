@@ -1,0 +1,13 @@
+{
+  "name": "property-app",
+  "private": true,
+  "workspaces": [
+    "apps/api",
+    "apps/web"
+  ],
+  "scripts": {
+    "start": "sh -c 'npm run dev:api & npm run dev:web & wait'",
+    "dev:api": "npm run dev --workspace apps/api",
+    "dev:web": "npm run dev --workspace apps/web"
+  }
+}
