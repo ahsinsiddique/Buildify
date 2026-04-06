@@ -1,7 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
+
+import appConfig from "@/lib/app-config";
 
 const navLinks = [
   { label: "Features", href: "#features" },
@@ -15,12 +18,16 @@ export function MarketingHeader() {
     <header className="sticky top-0 z-50 w-full border-b border-black/8 bg-[rgba(246,240,232,0.85)] backdrop-blur-md">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2">
-          <span className="inline-flex h-8 w-8 items-center justify-center rounded-lg bg-[#0f172a] text-xs font-bold text-[#c79b42]">
-            BF
-          </span>
+        <Link href="/" className="flex items-center gap-2.5">
+          <Image
+            src={appConfig.logoUrl}
+            alt={appConfig.logoAlt}
+            width={32}
+            height={32}
+            className="rounded-lg object-contain"
+          />
           <span className="text-base font-semibold tracking-tight text-[#0f172a]">
-            BrickFlow
+            {appConfig.appName}
           </span>
         </Link>
 
