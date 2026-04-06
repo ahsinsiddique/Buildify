@@ -9,7 +9,7 @@ import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { fetchWorkerIntelligence, fetchClients, WorkerIntelligenceData, Client, createResource, updateResource, deleteResource, payWorker } from "@/lib/api";
+import { fetchWorkerIntelligence, fetchClients, fetchProjects, WorkerIntelligenceData, Client, Project, createResource, updateResource, deleteResource, payWorker } from "@/lib/api";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -99,6 +99,7 @@ export function WorkerManagement() {
   const [formData, setFormData] = useState({ name: "", role: "", daily_wage: 0, phone: "" });
 
   const [clients, setClients] = useState<Client[]>([]);
+  const [projects, setProjects] = useState<Project[]>([]);
 
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const [payWorkerTarget, setPayWorkerTarget] = useState<any>(null);
@@ -116,9 +117,10 @@ export function WorkerManagement() {
     setError("");
 
     try {
-      const [next, clientList] = await Promise.all([
+      const [next, clientList, projectList] = await Promise.all([
         fetchWorkerIntelligence(session.token),
         fetchClients(session.token).catch(() => [] as Client[]),
+        fetchProjects(session.token).catch(() => [] as Project[]),
       ]);
       if (next.workers.length === 0) {
         setData(defaultData);
@@ -126,6 +128,7 @@ export function WorkerManagement() {
         setData(next);
       }
       setClients(clientList);
+      setProjects(projectList);
     } catch (loadError) {
       console.error(loadError);
       setData(defaultData);
@@ -574,7 +577,7 @@ export function WorkerManagement() {
                   </div>
                 </div>
 
-                {/* Project selector */}
+                {/* Project selector — all active projects */}
                 <div>
                   <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Charge to Project</label>
                   <div className="relative">
@@ -586,12 +589,17 @@ export function WorkerManagement() {
                       onChange={(e) => setPayFormData(p => ({ ...p, projectId: parseInt(e.target.value) || 0 }))}
                     >
                       <option value={0} disabled>Select project…</option>
-                      {payWorkerTarget.assignedProjects?.map((proj: any) => (
-                        <option key={proj.project_id} value={proj.project_id}>{proj.project_name}</option>
+                      {projects.map((proj) => (
+                        <option key={proj.id} value={proj.id}>
+                          {proj.name}{proj.status ? ` — ${proj.status}` : ""}
+                        </option>
                       ))}
                     </select>
                     <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
                   </div>
+                  {projects.length === 0 && (
+                    <p className="text-xs text-amber-600 mt-1.5 font-medium">No projects found — create a project first.</p>
+                  )}
                 </div>
 
                 {/* Client selector — invoice billing target */}
@@ -655,7 +663,7 @@ export function WorkerManagement() {
                     <div className="flex justify-between text-sm">
                       <span className="text-ink/50">Project</span>
                       <span className="font-semibold text-ink">
-                        {payWorkerTarget.assignedProjects?.find((p: any) => p.project_id === payFormData.projectId)?.project_name ?? "—"}
+                        {projects.find(p => p.id === payFormData.projectId)?.name ?? "—"}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">

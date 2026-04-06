@@ -174,8 +174,18 @@ export type Client = {
   phone?: string;
 };
 
+export type Project = {
+  id: number;
+  name: string;
+  status: string;
+};
+
 export async function fetchClients(token: string) {
   return apiRequest<Client[]>("/clients", { token });
+}
+
+export async function fetchProjects(token: string) {
+  return apiRequest<Project[]>("/projects", { token });
 }
 
 export async function payWorker(
