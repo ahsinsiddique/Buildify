@@ -2,6 +2,7 @@ export const resourcePages = {
   clients: {
     title: "Clients",
     eyebrow: "Client Relationships",
+    description: "Manage your client relationships and contact directory. Link clients to invoices and projects for full billing traceability.",
     path: "/clients",
     fields: [
       { name: "name", label: "Client Name", required: true },
@@ -19,6 +20,7 @@ export const resourcePages = {
   properties: {
     title: "Properties",
     eyebrow: "Property Management",
+    description: "Log and track every plot, unit, and property asset in your portfolio. Assign properties to projects and monitor status from available to sold.",
     path: "/properties",
     fields: [
       { name: "title", label: "Title", required: true },
@@ -47,6 +49,7 @@ export const resourcePages = {
   vendors: {
     title: "Vendors",
     eyebrow: "Vendor Directory",
+    description: "Maintain your supplier and contractor directory. Vendors feed directly into material purchases and expense records.",
     path: "/vendors",
     fields: [
       { name: "name", label: "Vendor Name", required: true },
@@ -77,6 +80,7 @@ export const resourcePages = {
   projects: {
     title: "Projects",
     eyebrow: "Project Management",
+    description: "Create and manage construction projects from inception to handover. Set budgets, timelines, and track real-time progress against targets.",
     path: "/projects",
     fields: [
       { name: "name", label: "Name", required: true },
@@ -105,6 +109,7 @@ export const resourcePages = {
   expenses: {
     title: "Expenses",
     eyebrow: "Cost Tracking",
+    description: "Log every cost against a project and category. Expenses feed directly into the financial dashboard and profitability calculations.",
     path: "/expenses",
     fields: [
       {
@@ -148,6 +153,7 @@ export const resourcePages = {
   workers: {
     title: "Workers",
     eyebrow: "Workforce",
+    description: "Register your workforce, set daily wages, and assign workers to projects. Worker data links to attendance, salary computation, and payment records.",
     path: "/workers",
     fields: [
       { name: "name", label: "Name", required: true },
@@ -165,6 +171,7 @@ export const resourcePages = {
   materials: {
     title: "Materials",
     eyebrow: "Inventory",
+    description: "Track your material inventory by unit, price, and vendor. Keep stock levels current to avoid project delays.",
     path: "/materials",
     fields: [
       { name: "name", label: "Name", required: true },
@@ -190,6 +197,7 @@ export const resourcePages = {
   invoices: {
     title: "Invoices",
     eyebrow: "Billing",
+    description: "Generate and manage client invoices linked to projects. Track payment status from unpaid to settled in real time.",
     path: "/invoices",
     fields: [
       { name: "invoice_number", label: "Invoice Number", required: true },

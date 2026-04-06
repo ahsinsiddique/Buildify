@@ -26,6 +26,7 @@ type FieldConfig = {
 type ResourceManagerProps = {
   title: string;
   eyebrow: string;
+  description?: string;
   path: string;
   fields: readonly FieldConfig[];
   columns: ReadonlyArray<{ key: string; label: string }>;
@@ -55,6 +56,7 @@ function normalizeValue(field: FieldConfig, value: string) {
 export function ResourceManager({
   title,
   eyebrow,
+  description,
   path,
   fields,
   columns
@@ -225,7 +227,7 @@ export function ResourceManager({
           </div>
           <h3 className="font-display text-4xl text-ink">{title}</h3>
           <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
-            Add new records, keep your contacts organized, and feed clean linked data into projects, invoices, and materials without typing raw IDs.
+            {description ?? "Add new records, keep your contacts organized, and feed clean linked data into projects, invoices, and materials without typing raw IDs."}
           </p>
         </div>
 
