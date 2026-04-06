@@ -75,13 +75,60 @@ export const invoiceService = {
   async listWithPayments() {
     const result = await db.query(
       `SELECT i.*,
-              COALESCE(SUM(p.amount), 0) AS amount_paid
+              COALESCE(SUM(pay.amount), 0) AS amount_paid,
+              c.name  AS client_name,
+              pr.name AS project_name
        FROM invoices i
-       LEFT JOIN payments p ON p.invoice_id = i.id
-       GROUP BY i.id
-       ORDER BY i.created_at DESC`
+       LEFT JOIN payments pay ON pay.invoice_id = i.id
+       LEFT JOIN clients  c   ON c.id  = i.client_id
+       LEFT JOIN projects pr  ON pr.id = i.project_id
+       GROUP BY i.id, c.name, pr.name
+       ORDER BY i.issued_date DESC`
+    );
+    return result.rows;
+  },
+
+  async getDetail(id) {
+    const invoiceResult = await db.query(
+      `SELECT i.*,
+              COALESCE(SUM(pay.amount), 0) AS amount_paid,
+              c.name  AS client_name,
+              c.phone AS client_phone,
+              c.email AS client_email,
+              pr.name AS project_name,
+              pr.status AS project_status,
+              pr.budget AS project_budget,
+              pr.progress_percent AS project_progress
+       FROM invoices i
+       LEFT JOIN payments pay ON pay.invoice_id = i.id
+       LEFT JOIN clients  c   ON c.id  = i.client_id
+       LEFT JOIN projects pr  ON pr.id = i.project_id
+       WHERE i.id = $1
+       GROUP BY i.id, c.name, c.phone, c.email,
+                pr.name, pr.status, pr.budget, pr.progress_percent`,
+      [id]
     );
 
-    return result.rows;
+    const invoice = invoiceResult.rows[0];
+    if (!invoice) throw new HttpError(404, "Invoice not found");
+
+    // Related labour expenses for the same project
+    const expensesResult = await db.query(
+      `SELECT e.id,
+              e.amount,
+              e.description,
+              e.expense_date,
+              e.category,
+              w.id   AS worker_id,
+              w.name AS worker_name,
+              w.role AS worker_role
+       FROM expenses e
+       LEFT JOIN workers w ON w.id = e.worker_id
+       WHERE e.project_id = $1
+       ORDER BY e.expense_date DESC`,
+      [invoice.project_id ?? -1]
+    );
+
+    return { invoice, expenses: expensesResult.rows };
   }
 };
