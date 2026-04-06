@@ -1,90 +1,115 @@
+"use client";
+
+import { useEffect, useRef } from "react";
 import Link from "next/link";
 
 const testimonials = [
   {
-    quote:
-      "Buildify didn't just digitize our workflow — it gave us complete financial clarity across six active construction sites. The invoice automation alone saved us 40 hours a month.",
-    author: "Kamran Mirza",
-    role: "Director, Mirza Construction Group",
+    quote: "Buildify didn't just streamline our workflow; it gave us complete financial visibility across 8 active sites simultaneously.",
+    highlight: "complete financial visibility",
+    author: "Tariq Mehmood",
+    title: "CEO, TM Construction Group",
   },
   {
-    quote:
-      "As a property developer, precision and transparency are non-negotiable. The project tracking and worker payment system is exactly what we needed at scale.",
-    author: "Sana Rehman",
-    role: "CEO, Prime Estates Pakistan",
+    quote: "The workforce portal and invoice automation are the gold standard for high-end construction transparency in Pakistan.",
+    highlight: "gold standard",
+    author: "Ayesha Farooq",
+    title: "CFO, Skyline Developers",
   },
 ];
 
 export function Cta() {
+  const sectionRef = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      (entries) => entries.forEach((e) => { if (e.isIntersecting) e.target.classList.add("active"); }),
+      { threshold: 0.1, rootMargin: "0px 0px -80px 0px" }
+    );
+    sectionRef.current?.querySelectorAll(".reveal-on-scroll").forEach((el) => observer.observe(el));
+    return () => observer.disconnect();
+  }, []);
+
+  useEffect(() => {
+    const onScroll = () => {
+      document.querySelectorAll<HTMLElement>(".parallax-bg").forEach((el) => {
+        el.style.setProperty("--scroll-y", `${window.pageYOffset * 0.3}px`);
+      });
+    };
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
   return (
-    <>
-      {/* ── Testimonials ── */}
-      <section className="py-32 px-8 md:px-12 bg-surface">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-16">
-            <div className="flex items-center justify-center gap-3 mb-5">
-              <div className="h-px w-10 bg-gold" />
-              <span className="text-xs uppercase tracking-[0.3em] text-gold font-headline font-bold">Trust</span>
-              <div className="h-px w-10 bg-gold" />
-            </div>
-            <h2 className="font-headline text-3xl font-bold uppercase tracking-widest text-[#e5e2e1]">
-              Voices of Legacy
-            </h2>
-            <div className="w-20 h-0.5 gold-gradient mx-auto mt-6" />
-          </div>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 gap-px bg-white/5">
-            {testimonials.map((t) => (
-              <div key={t.author} className="p-12 md:p-16 bg-surface-low">
-                <span className="text-gold text-5xl font-headline leading-none mb-6 block">"</span>
-                <p className="text-xl md:text-2xl font-light italic leading-relaxed mb-10 text-[#e5e2e1]">
-                  {t.quote}
-                </p>
-                <div className="flex items-center gap-4">
-                  <div className="w-10 h-10 bg-surface-high border border-gold/20 flex-shrink-0" />
-                  <div>
-                    <p className="font-bold text-sm uppercase tracking-tighter text-[#e5e2e1]">{t.author}</p>
-                    <p className="text-xs text-[#99907c] tracking-widest uppercase mt-0.5">{t.role}</p>
-                  </div>
-                </div>
+    <section ref={sectionRef}>
+      {/* Testimonials */}
+      <div className="py-48 px-8 md:px-16 bg-surface">
+        <div className="max-w-7xl mx-auto flex flex-col gap-32">
+          {testimonials.map((t, i) => (
+            <div
+              key={t.author}
+              className={`reveal-on-scroll max-w-5xl ${i % 2 !== 0 ? "self-end text-right" : ""}`}
+              style={{ transitionDelay: `${i * 0.15}s` }}
+            >
+              <div className={`text-primary text-7xl mb-12 opacity-50 font-headline leading-none select-none ${i % 2 !== 0 ? "block ml-auto" : ""}`}>"</div>
+              <blockquote className="text-4xl md:text-6xl font-extralight italic leading-tight text-white mb-16">
+                {t.quote.split(new RegExp(`(${t.highlight})`, "i")).map((part, idx) =>
+                  part.toLowerCase() === t.highlight.toLowerCase()
+                    ? <span key={idx} className="font-bold text-primary not-italic">{part}</span>
+                    : part
+                )}
+              </blockquote>
+              <div className={`flex items-center gap-6 ${i % 2 !== 0 ? "justify-end" : ""}`}>
+                {i % 2 !== 0 ? (
+                  <>
+                    <div>
+                      <p className="font-bold text-lg uppercase tracking-widest text-on-surface">{t.author}</p>
+                      <p className="text-xs text-outline tracking-[0.3em] uppercase">{t.title}</p>
+                    </div>
+                    <div className="w-16 h-px bg-primary flex-shrink-0" />
+                  </>
+                ) : (
+                  <>
+                    <div className="w-16 h-px bg-primary flex-shrink-0" />
+                    <div>
+                      <p className="font-bold text-lg uppercase tracking-widest text-on-surface">{t.author}</p>
+                      <p className="text-xs text-outline tracking-[0.3em] uppercase">{t.title}</p>
+                    </div>
+                  </>
+                )}
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* ── Final CTA ── */}
-      <section className="relative py-40 overflow-hidden">
-        <div className="absolute inset-0 z-0">
+      {/* Final CTA */}
+      <div className="relative min-h-screen flex items-center justify-center overflow-hidden bg-black py-40">
+        <div className="absolute inset-0 z-0 opacity-30">
           <img
-            alt="Modern building architecture"
-            className="w-full h-full object-cover grayscale brightness-[0.15]"
-            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1920&q=80"
+            src="https://images.unsplash.com/photo-1486325212027-8081e485255e?w=1600&q=80"
+            alt="Skyscraper"
+            className="w-full h-full object-cover grayscale parallax-bg"
           />
-          <div className="absolute inset-0 bg-[#131313]/60" />
         </div>
-        <div className="relative z-10 max-w-4xl mx-auto text-center px-8 md:px-12">
-          <div className="flex items-center justify-center gap-3 mb-8">
-            <div className="h-px w-10 bg-gold" />
-            <span className="text-xs uppercase tracking-[0.3em] text-gold font-headline font-bold">Start Free</span>
-            <div className="h-px w-10 bg-gold" />
-          </div>
-          <h2 className="font-headline text-5xl md:text-7xl font-black uppercase tracking-tighter text-[#e5e2e1] mb-8 leading-[0.9]">
-            The System That<br />
-            <span className="text-gold">Runs Your Business.</span>
+        <div className="relative z-10 max-w-screen-2xl mx-auto text-center px-8 reveal-on-scroll">
+          <h2 className="font-headline text-7xl md:text-[10rem] font-black uppercase tracking-[-0.05em] leading-[0.8] mb-16 text-white">
+            Your Projects.<br />Your Control.<br />
+            <span className="text-primary italic font-light">Your Legacy.</span>
           </h2>
-          <p className="text-[#d0c5af] text-lg mb-12 max-w-2xl mx-auto font-light leading-relaxed">
-            Move your construction and property operations out of Excel. One login,
-            full control — projects, finance, workers, invoicing, and insights.
-          </p>
-          <Link
-            href="/auth"
-            className="gold-gradient text-[#3d2f00] px-12 py-6 font-headline font-bold uppercase tracking-[0.2em] text-sm transition-transform hover:scale-105 active:scale-95 inline-block"
-          >
-            Enter Buildify Today
-          </Link>
+          <div className="flex flex-col items-center gap-12">
+            <p className="text-white/60 text-xl max-w-2xl font-light tracking-wide">
+              Join the builders using Buildify to run smarter, tighter, and more profitable operations.
+            </p>
+            <Link
+              href="/auth"
+              className="gold-gradient text-on-primary px-16 py-8 font-headline font-bold uppercase tracking-[0.3em] text-xs transition-all hover:scale-110 shadow-2xl shadow-primary/20 inline-block"
+            >
+              Start Building Today
+            </Link>
+          </div>
         </div>
-      </section>
-    </>
+      </div>
+    </section>
   );
 }

@@ -9,7 +9,7 @@ export default function DashboardLayout({
 }>) {
   return (
     <AuthGuard>
-      <div className="min-h-screen lg:flex">
+      <div className="min-h-screen bg-surface lg:flex">
         <Sidebar />
         <div className="flex-1 px-5 py-5 lg:px-8">
           <Navbar />

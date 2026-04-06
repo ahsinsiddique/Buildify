@@ -26,12 +26,12 @@ const fallback: ProjectIntelligence = {
 
 function riskTone(risk: IntelligenceProject["overrunRisk"]) {
   if (risk === "high") {
-    return "border-red-500/30 bg-red-500/10 text-red-600";
+    return "border-red-500/30 bg-red-500/10 text-red-400";
   }
   if (risk === "medium") {
-    return "border-amber-500/30 bg-amber-500/10 text-amber-600";
+    return "border-amber-500/30 bg-amber-500/10 text-amber-400";
   }
-  return "border-emerald-500/30 bg-emerald-500/10 text-emerald-600";
+  return "border-emerald-500/30 bg-emerald-500/10 text-emerald-400";
 }
 
 const containerVariants = {
@@ -52,14 +52,14 @@ const GlassCard = ({ children, className }: { children: React.ReactNode; classNa
     variants={itemVariants}
     whileHover={{ y: -4, transition: { duration: 0.3 } }}
     className={cn(
-      "relative overflow-hidden rounded-3xl p-6",
-      "bg-white/40 backdrop-blur-xl border border-white/40",
-      "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05),inset_0__1px_0_rgba(255,255,255,0.6)]",
+      "relative overflow-hidden p-6",
+      "bg-surface-container border border-white/5",
+      "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]",
       "transition-all duration-300",
       className
     )}
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-gradient-to-br from-white/3 to-transparent pointer-events-none" />
     <div className="relative z-10">{children}</div>
   </motion.div>
 );

@@ -9,29 +9,26 @@ export function Navbar() {
   const router = useRouter();
 
   return (
-    <header className="flex flex-col gap-4 rounded-[1.5rem] border border-black/10 bg-white/70 px-5 py-4 shadow-sm backdrop-blur lg:flex-row lg:items-center lg:justify-between">
+    <header className="flex flex-col gap-4 border border-white/5 bg-surface-container px-6 py-5 lg:flex-row lg:items-center lg:justify-between">
       <div>
-        <p className="text-sm uppercase tracking-[0.25em] text-moss">Operations Center</p>
-        <h2 className="mt-2 font-display text-3xl text-ink">
+        <p className="text-[9px] uppercase tracking-[0.4em] text-primary font-bold">Operations Center</p>
+        <h2 className="mt-2 font-headline font-black text-2xl text-on-surface tracking-tight">
           Live cost tracking and project visibility
         </h2>
       </div>
 
-      <div className="flex flex-wrap items-center gap-3 text-sm text-slate-700">
-        <div className="rounded-full border border-black/10 bg-white px-4 py-2">
+      <div className="flex flex-wrap items-center gap-3 text-xs text-on-surface-variant">
+        <div className="border border-white/10 bg-surface-container-high px-4 py-2 text-[10px] uppercase tracking-[0.2em]">
           {session?.user.name} · {session?.user.role}
         </div>
-        <div className="rounded-full border border-black/10 bg-white px-4 py-2">
+        <div className="border border-white/10 bg-surface-container-high px-4 py-2 text-[10px] uppercase tracking-[0.2em]">
           3 invoice reminders
         </div>
-        <div className="rounded-full border border-black/10 bg-white px-4 py-2">
+        <div className="border border-white/10 bg-surface-container-high px-4 py-2 text-[10px] uppercase tracking-[0.2em]">
           1 budget alert
         </div>
-        <div className="rounded-full border border-black/10 bg-white px-4 py-2">
-          Site review at 4:00 PM
-        </div>
         <button
-          className="rounded-full bg-ink px-4 py-2 text-white"
+          className="gold-gradient text-on-primary px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em] hover:scale-105 transition-transform"
           onClick={() => {
             logout();
             router.replace("/auth");

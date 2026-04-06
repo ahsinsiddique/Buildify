@@ -107,26 +107,33 @@ export function DashboardOverview() {
       </section>
 
       {error ? (
-        <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+        <div className="border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
           {error}
         </div>
       ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="rounded-[1.75rem] border border-black/10 bg-white/75 p-6 shadow-sm backdrop-blur">
+        <div className="border border-white/5 bg-surface-container p-6">
           <div className="mb-6">
-            <p className="text-sm uppercase tracking-[0.22em] text-slate-500">Analytics</p>
-            <h3 className="mt-2 font-display text-3xl text-ink">Daily expenses</h3>
+            <p className="text-[9px] uppercase tracking-[0.35em] text-on-surface-variant font-bold">Analytics</p>
+            <h3 className="mt-2 font-headline font-black text-2xl text-on-surface">Daily expenses</h3>
           </div>
 
           <div className="h-72">
             <ResponsiveContainer height="100%" width="100%">
               <BarChart data={spendingTrend}>
-                <CartesianGrid stroke="#ddd6ce" strokeDasharray="3 3" vertical={false} />
-                <XAxis axisLine={false} dataKey="day" tickLine={false} />
-                <YAxis axisLine={false} tickLine={false} />
-                <Tooltip />
-                <Bar dataKey="total" fill="#365847" radius={[10, 10, 0, 0]} />
+                <CartesianGrid stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" vertical={false} />
+                <XAxis axisLine={false} dataKey="day" tickLine={false} tick={{ fill: "#d0c5af", fontSize: 11 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: "#d0c5af", fontSize: 11 }} />
+                <Tooltip
+                  contentStyle={{
+                    background: "rgba(17,17,17,0.97)",
+                    border: "1px solid rgba(255,255,255,0.05)",
+                    borderRadius: "0px",
+                    color: "#e5e2e1",
+                  }}
+                />
+                <Bar dataKey="total" fill="#f3ca50" radius={[0, 0, 0, 0]} />
               </BarChart>
             </ResponsiveContainer>
           </div>
