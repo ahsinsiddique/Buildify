@@ -219,37 +219,37 @@ export function ResourceManager({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-      <section className="relative overflow-hidden rounded-[1.9rem] border border-black/10 bg-[linear-gradient(145deg,rgba(255,255,255,0.78),rgba(255,247,235,0.95))] p-6 shadow-xl backdrop-blur">
-        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_left,rgba(199,155,66,0.2),transparent_55%),radial-gradient(circle_at_top_right,rgba(54,88,71,0.14),transparent_40%)]" />
+      <section className="relative overflow-hidden border border-white/5 bg-surface-container p-6">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_left,rgba(243,202,80,0.08),transparent_55%),radial-gradient(circle_at_top_right,rgba(243,202,80,0.04),transparent_40%)]" />
         <div className="relative">
-          <div className="mb-5 inline-flex rounded-full border border-black/10 bg-white/70 px-4 py-2 text-xs uppercase tracking-[0.28em] text-moss">
+          <div className="mb-5 inline-flex rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-primary">
             {eyebrow}
           </div>
-          <h3 className="font-display text-4xl text-ink">{title}</h3>
-          <p className="mt-3 max-w-2xl text-sm leading-7 text-slate-600">
+          <h3 className="font-headline font-black text-4xl text-on-surface">{title}</h3>
+          <p className="mt-3 max-w-2xl text-sm leading-7 text-on-surface-variant">
             {description ?? "Add new records, keep your contacts organized, and feed clean linked data into projects, invoices, and materials without typing raw IDs."}
           </p>
         </div>
 
         {!canEdit ? (
-          <div className="mt-6 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-800">
+          <div className="mt-6 border border-amber-500/20 bg-amber-500/10 px-4 py-3 text-sm text-amber-400">
             Your current role can view records but cannot create or edit them.
           </div>
         ) : null}
 
         {error ? (
-          <div className="mt-6 rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+          <div className="mt-6 border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
             {error}
           </div>
         ) : null}
 
         <form className="mt-8 grid gap-4" onSubmit={handleSubmit}>
           {fields.map((field) => (
-            <label className="grid gap-2 text-sm text-slate-700" key={field.name}>
+            <label className="grid gap-2 text-sm text-on-surface-variant" key={field.name}>
               <span className="font-medium">{field.label}</span>
               {field.type === "textarea" ? (
                 <textarea
-                  className="min-h-24 rounded-2xl border border-black/10 bg-white/85 px-4 py-3 outline-none transition focus:border-moss focus:bg-white"
+                  className="min-h-24 border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                   onChange={(event) =>
                     setFormValues((current) => ({
                       ...current,
@@ -261,7 +261,7 @@ export function ResourceManager({
                 />
               ) : field.type === "select" ? (
                 <select
-                  className="rounded-2xl border border-black/10 bg-white/85 px-4 py-3 outline-none transition focus:border-moss focus:bg-white"
+                  className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                   onChange={(event) =>
                     setFormValues((current) => ({
                       ...current,
@@ -280,7 +280,7 @@ export function ResourceManager({
                 </select>
               ) : (
                 <input
-                  className="rounded-2xl border border-black/10 bg-white/85 px-4 py-3 outline-none transition focus:border-moss focus:bg-white"
+                  className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                   onChange={(event) =>
                     setFormValues((current) => ({
                       ...current,
@@ -297,7 +297,7 @@ export function ResourceManager({
 
           <div className="flex flex-wrap gap-3">
             <button
-              className="rounded-2xl bg-[linear-gradient(135deg,#0f172a,#365847)] px-5 py-3 text-sm font-semibold text-white shadow-lg shadow-moss/10 transition hover:translate-y-[-1px] disabled:opacity-60"
+              className="gold-gradient text-on-primary px-5 py-3 text-sm font-bold uppercase tracking-[0.2em] transition hover:scale-105 disabled:opacity-60"
               disabled={!canEdit || isSubmitting}
               type="submit"
             >
@@ -305,7 +305,7 @@ export function ResourceManager({
             </button>
             {editingId ? (
               <button
-                className="rounded-2xl border border-black/10 bg-white/70 px-5 py-3 text-sm transition hover:bg-white"
+                className="border border-white/10 bg-surface-container-high text-on-surface-variant px-5 py-3 text-sm transition hover:bg-surface-container-highest hover:text-on-surface"
                 onClick={resetForm}
                 type="button"
               >
@@ -316,39 +316,39 @@ export function ResourceManager({
         </form>
       </section>
 
-      <section className="rounded-[1.9rem] border border-black/10 bg-white/78 p-6 shadow-xl backdrop-blur">
+      <section className="border border-white/5 bg-surface-container p-6">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
-            <p className="text-xs uppercase tracking-[0.28em] text-slate-500">Live Records</p>
-            <h4 className="mt-2 font-display text-3xl text-ink">Browse and manage</h4>
+            <p className="text-[9px] uppercase tracking-[0.35em] text-on-surface-variant font-bold">Live Records</p>
+            <h4 className="mt-2 font-headline font-black text-3xl text-on-surface">Browse and manage</h4>
           </div>
-          <div className="rounded-full border border-black/10 bg-white/75 px-4 py-2 text-xs uppercase tracking-[0.2em] text-slate-500">
+          <div className="border border-white/10 bg-surface-container-high px-4 py-2 text-[9px] uppercase tracking-[0.25em] text-on-surface-variant">
             {rows.length} record{rows.length === 1 ? "" : "s"}
           </div>
         </div>
         <div className="overflow-x-auto">
           <table className="min-w-full text-left">
-            <thead className="text-sm text-slate-500">
+            <thead>
               <tr>
                 {columns.map((column) => (
-                  <th className="pb-3 font-medium" key={column.key}>
+                  <th className="pb-4 text-[9px] font-bold uppercase tracking-[0.3em] text-on-surface-variant" key={column.key}>
                     {column.label}
                   </th>
                 ))}
-                <th className="pb-3 font-medium">Actions</th>
+                <th className="pb-4 text-[9px] font-bold uppercase tracking-[0.3em] text-on-surface-variant">Actions</th>
               </tr>
             </thead>
             <tbody>
               {isLoading ? (
-                <tr className="border-t border-black/5 text-sm text-slate-500">
-                  <td className="py-4" colSpan={columns.length + 1}>
+                <tr className="border-t border-white/5">
+                  <td className="py-4 text-sm text-on-surface-variant" colSpan={columns.length + 1}>
                     Loading records...
                   </td>
                 </tr>
               ) : rows.length ? (
                 rows.map((row) => (
                   <tr
-                    className="border-t border-black/5 text-sm text-slate-700 transition hover:bg-sand/50"
+                    className="border-t border-white/5 text-sm text-on-surface-variant transition hover:bg-white/3"
                     key={row.id}
                   >
                     {columns.map((column) => (
@@ -359,7 +359,7 @@ export function ResourceManager({
                     <td className="py-4">
                       <div className="flex flex-wrap gap-2">
                         <button
-                          className="rounded-full border border-black/10 px-3 py-1 text-xs"
+                          className="border border-white/10 px-3 py-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors disabled:opacity-40"
                           disabled={!canEdit}
                           onClick={() => startEdit(row)}
                           type="button"
@@ -367,7 +367,7 @@ export function ResourceManager({
                           Edit
                         </button>
                         <button
-                          className="rounded-full border border-red-200 px-3 py-1 text-xs text-red-700 disabled:opacity-50"
+                          className="border border-red-500/20 px-3 py-1 text-xs text-red-400 hover:border-red-500/40 transition-colors disabled:opacity-40"
                           disabled={!canDelete}
                           onClick={() => void handleDelete(row.id)}
                           type="button"
@@ -379,8 +379,8 @@ export function ResourceManager({
                   </tr>
                 ))
               ) : (
-                <tr className="border-t border-black/5 text-sm text-slate-500">
-                  <td className="py-4" colSpan={columns.length + 1}>
+                <tr className="border-t border-white/5">
+                  <td className="py-6 text-sm text-on-surface-variant" colSpan={columns.length + 1}>
                     No records found yet.
                   </td>
                 </tr>

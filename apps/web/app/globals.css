@@ -1,25 +1,21 @@
-@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;700;800&family=Inter:wght@300;400;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@200;400;700;800&family=Inter:wght@300;400;600&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --background: #f4efe7;
-  --foreground: #0f172a;
-  --panel: rgba(255, 255, 255, 0.74);
-  --panel-border: rgba(15, 23, 42, 0.08);
+  --background: #0a0a0a;
+  --foreground: #e5e2e1;
 }
 
 body {
   margin: 0;
   min-height: 100vh;
-  background:
-    radial-gradient(circle at top left, rgba(199, 155, 66, 0.3), transparent 28%),
-    radial-gradient(circle at right, rgba(54, 88, 71, 0.22), transparent 32%),
-    linear-gradient(180deg, #f6f0e8 0%, #efe6da 100%);
-  color: var(--foreground);
+  background-color: #0a0a0a;
+  color: #e5e2e1;
   font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+  scroll-behavior: smooth;
 }
 
 a {
@@ -31,13 +27,48 @@ a {
   box-sizing: border-box;
 }
 
-/* ── Marketing dark theme utilities ─────────────────────────── */
+/* ── MONOLITH Design Utilities ───────────────────────────────────────── */
 .gold-gradient {
   background: linear-gradient(135deg, #f3ca50 0%, #d5af37 100%);
 }
 
+.glass-panel {
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.letter-spacing-custom {
+  letter-spacing: -0.04em;
+}
+
+/* ── Scroll Reveal Animation ─────────────────────────────────────────── */
+.reveal-on-scroll {
+  opacity: 0;
+}
+
+.reveal-on-scroll.active {
+  animation: fadeUp 1s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+
+@keyframes fadeUp {
+  0%   { opacity: 0; transform: translateY(40px); }
+  100% { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes reveal {
+  0%   { transform: translateY(100%); }
+  100% { transform: translateY(0); }
+}
+
+/* ── Parallax ────────────────────────────────────────────────────────── */
+.parallax-bg {
+  transform: translateY(var(--scroll-y, 0));
+  will-change: transform;
+}
+
+/* ── Marketing page ──────────────────────────────────────────────────── */
 .marketing-page {
-  background-color: #131313;
+  background-color: #0a0a0a;
   color: #e5e2e1;
-  font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
 }

@@ -66,16 +66,16 @@ const itemVariants: Variants = {
 const GlassCard = ({ children, className }: { children: React.ReactNode; className?: string }) => (
   <motion.div
     variants={itemVariants}
-    whileHover={{ y: -5, transition: { duration: 0.3, ease: "easeOut" } }}
+    whileHover={{ y: -4, transition: { duration: 0.3, ease: "easeOut" } }}
     className={cn(
-      "relative overflow-hidden rounded-3xl p-6",
-      "bg-white/40 backdrop-blur-xl border border-white/40",
-      "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.05),inset_0__1px_0_rgba(255,255,255,0.6)]",
+      "relative overflow-hidden p-6",
+      "bg-surface-container border border-white/5",
+      "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]",
       "transition-all duration-300",
       className
     )}
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/30 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-gradient-to-br from-white/3 to-transparent pointer-events-none" />
     <div className="relative z-10 h-full w-full">{children}</div>
   </motion.div>
 );
@@ -100,16 +100,16 @@ export function FinancialDashboard() {
         {/* Header Section */}
         <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-center justify-between mb-10 gap-4">
           <div>
-            <h1 className="text-4xl md:text-5xl font-display text-ink font-semibold tracking-tight">
+            <h1 className="text-4xl md:text-5xl font-headline font-black text-on-surface tracking-tight">
               Financial Overview
             </h1>
-            <p className="text-ink/60 mt-2 text-lg">Real-time tracking, profit/loss, and expense insights.</p>
+            <p className="text-on-surface-variant mt-2 text-lg font-light">Real-time tracking, profit/loss, and expense insights.</p>
           </div>
           <div className="flex gap-3">
-            <button className="px-6 py-3 rounded-full bg-white/50 backdrop-blur-md border border-white/60 text-ink shadow-sm hover:shadow-md transition-all font-medium">
+            <button className="px-6 py-3 border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all font-medium text-sm">
               Export PDF
             </button>
-            <button className="px-6 py-3 rounded-full bg-ink text-sand shadow-[0_10px_20px_-10px_rgba(15,23,42,0.5)] hover:shadow-[0_15px_25px_-10px_rgba(15,23,42,0.6)] hover:-translate-y-0.5 transition-all font-medium">
+            <button className="px-6 py-3 gold-gradient text-on-primary hover:scale-105 transition-all font-bold text-sm uppercase tracking-[0.2em]">
               New Transaction
             </button>
           </div>
@@ -127,8 +127,8 @@ export function FinancialDashboard() {
                 +12.5%
               </span>
             </div>
-            <p className="text-ink/60 font-medium mb-1">Total Cash Flow</p>
-            <h3 className="text-3xl font-display font-semibold text-ink">$148,000</h3>
+            <p className="text-on-surface-variant font-medium mb-1">Total Cash Flow</p>
+            <h3 className="text-3xl font-headline font-black text-on-surface">$148,000</h3>
           </GlassCard>
 
           <GlassCard>
@@ -141,8 +141,8 @@ export function FinancialDashboard() {
                 +8.2%
               </span>
             </div>
-            <p className="text-ink/60 font-medium mb-1">Net Profit</p>
-            <h3 className="text-3xl font-display font-semibold text-ink">$67,500</h3>
+            <p className="text-on-surface-variant font-medium mb-1">Net Profit</p>
+            <h3 className="text-3xl font-headline font-black text-on-surface">$67,500</h3>
           </GlassCard>
 
           <GlassCard>
@@ -155,8 +155,8 @@ export function FinancialDashboard() {
                 -2.4%
               </span>
             </div>
-            <p className="text-ink/60 font-medium mb-1">Total Expenses</p>
-            <h3 className="text-3xl font-display font-semibold text-ink">$100,000</h3>
+            <p className="text-on-surface-variant font-medium mb-1">Total Expenses</p>
+            <h3 className="text-3xl font-headline font-black text-on-surface">$100,000</h3>
           </GlassCard>
 
           <GlassCard>
@@ -165,8 +165,8 @@ export function FinancialDashboard() {
                 <Target size={24} />
               </div>
             </div>
-            <p className="text-ink/60 font-medium mb-1">Burn Rate</p>
-            <h3 className="text-3xl font-display font-semibold text-ink">$14,285 /mo</h3>
+            <p className="text-on-surface-variant font-medium mb-1">Burn Rate</p>
+            <h3 className="text-3xl font-headline font-black text-on-surface">$14,285 /mo</h3>
           </GlassCard>
         </div>
 
@@ -182,7 +182,7 @@ export function FinancialDashboard() {
                 </h3>
                 <p className="text-sm text-ink/60 mt-1">Income vs Expenses over time</p>
               </div>
-              <select className="bg-white/50 border border-ink/10 rounded-xl px-4 py-2 text-sm text-ink font-medium outline-none cursor-pointer">
+              <select className="bg-surface-container-high border border-white/10 px-4 py-2 text-sm text-on-surface-variant font-medium outline-none cursor-pointer">
                 <option>Last 7 Months</option>
                 <option>This Year</option>
                 <option>All Time</option>
@@ -193,23 +193,23 @@ export function FinancialDashboard() {
                 <AreaChart data={cashFlowData} margin={{ top: 10, right: 10, left: -20, bottom: 0 }}>
                   <defs>
                     <linearGradient id="colorIncome" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#365847" stopOpacity={0.3}/>
-                      <stop offset="95%" stopColor="#365847" stopOpacity={0}/>
+                      <stop offset="5%" stopColor="#f3ca50" stopOpacity={0.3}/>
+                      <stop offset="95%" stopColor="#f3ca50" stopOpacity={0}/>
                     </linearGradient>
                     <linearGradient id="colorExpense" x1="0" y1="0" x2="0" y2="1">
                       <stop offset="5%" stopColor="#bb6b3f" stopOpacity={0.3}/>
                       <stop offset="95%" stopColor="#bb6b3f" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(15,23,42,0.05)" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: "rgba(15,23,42,0.5)", fontSize: 12}} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: "rgba(15,23,42,0.5)", fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
-                  <RechartsTooltip 
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)' }}
-                    itemStyle={{ color: '#0f172a', fontWeight: 500 }}
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
+                  <RechartsTooltip
+                    contentStyle={{ borderRadius: '0px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', background: 'rgba(17,17,17,0.97)' }}
+                    itemStyle={{ color: '#e5e2e1', fontWeight: 500 }}
                   />
-                  <Area type="monotone" dataKey="income" stroke="#365847" strokeWidth={3} fillOpacity={1} fill="url(#colorIncome)" />
-                  <Area type="monotone" dataKey="expenses" stroke="#bb6b3f" strokeWidth={3} fillOpacity={1} fill="url(#colorExpense)" />
+                  <Area type="monotone" dataKey="income" stroke="#f3ca50" strokeWidth={2} fillOpacity={1} fill="url(#colorIncome)" />
+                  <Area type="monotone" dataKey="expenses" stroke="#bb6b3f" strokeWidth={2} fillOpacity={1} fill="url(#colorExpense)" />
                 </AreaChart>
               </ResponsiveContainer>
             </div>
@@ -218,11 +218,11 @@ export function FinancialDashboard() {
           {/* Expense Breakdown */}
           <GlassCard className="flex flex-col min-h-[400px]">
             <div className="mb-4">
-              <h3 className="text-xl font-semibold text-ink flex items-center gap-2">
-                <PieChartIcon size={20} className="text-brass" />
+              <h3 className="text-xl font-semibold text-on-surface flex items-center gap-2">
+                <PieChartIcon size={20} className="text-primary" />
                 Where Money Goes
               </h3>
-              <p className="text-sm text-ink/60 mt-1">Expense distribution by category</p>
+              <p className="text-sm text-on-surface-variant mt-1">Expense distribution by category</p>
             </div>
             <div className="flex-1 w-full h-[250px]">
               <ResponsiveContainer width="100%" height="100%">
@@ -241,9 +241,9 @@ export function FinancialDashboard() {
                       <Cell key={`cell-${index}`} fill={entry.color} />
                     ))}
                   </Pie>
-                  <RechartsTooltip 
+                  <RechartsTooltip
                     formatter={(value: number) => `$${value.toLocaleString()}`}
-                    contentStyle={{ borderRadius: '12px', border: 'none', boxShadow: '0 4px 20px rgba(0,0,0,0.1)', background: 'rgba(255,255,255,0.9)' }}
+                    contentStyle={{ borderRadius: '0px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.5)', background: 'rgba(17,17,17,0.97)', color: '#e5e2e1' }}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -251,10 +251,10 @@ export function FinancialDashboard() {
             <div className="mt-4 grid grid-cols-2 gap-3">
               {expenseBreakdown.map((ext, idx) => (
                 <div key={idx} className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full" style={{ backgroundColor: ext.color }} />
+                  <div className="w-3 h-3" style={{ backgroundColor: ext.color }} />
                   <div className="flex flex-col">
-                    <span className="text-xs text-ink/60 font-medium">{ext.name}</span>
-                    <span className="text-sm font-semibold text-ink">${ext.value.toLocaleString()}</span>
+                    <span className="text-xs text-on-surface-variant font-medium">{ext.name}</span>
+                    <span className="text-sm font-semibold text-on-surface">${ext.value.toLocaleString()}</span>
                   </div>
                 </div>
               ))}
@@ -265,27 +265,27 @@ export function FinancialDashboard() {
           <GlassCard className="lg:col-span-3 min-h-[400px]">
              <div className="flex items-center justify-between mb-8">
               <div>
-                <h3 className="text-xl font-semibold text-ink flex items-center gap-2">
-                  <Activity size={20} className="text-ink" />
+                <h3 className="text-xl font-semibold text-on-surface flex items-center gap-2">
+                  <Activity size={20} className="text-primary" />
                   Profit & Loss per Project
                 </h3>
-                <p className="text-sm text-ink/60 mt-1">Real-time performance metrics</p>
+                <p className="text-sm text-on-surface-variant mt-1">Real-time performance metrics</p>
               </div>
             </div>
             <div className="w-full h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={projectProfitData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(15,23,42,0.05)" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: "rgba(15,23,42,0.7)", fontSize: 12}} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: "rgba(15,23,42,0.5)", fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
-                  <RechartsTooltip 
-                    cursor={{fill: 'rgba(15,23,42,0.02)'}}
-                    contentStyle={{ borderRadius: '16px', border: 'none', boxShadow: '0 10px 25px rgba(0,0,0,0.1)', background: 'rgba(255,255,255,0.9)', backdropFilter: 'blur(10px)' }}
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
+                  <RechartsTooltip
+                    cursor={{fill: 'rgba(255,255,255,0.03)'}}
+                    contentStyle={{ borderRadius: '0px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', background: 'rgba(17,17,17,0.97)', color: '#e5e2e1' }}
                     formatter={(value: number) => `$${value.toLocaleString()}`}
                   />
-                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px' }} />
-                  <Bar dataKey="profit" name="Profit" fill="#365847" radius={[4, 4, 0, 0]} />
-                  <Bar dataKey="loss" name="Loss" fill="#bb6b3f" radius={[4, 4, 0, 0]} />
+                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', color: '#d0c5af' }} />
+                  <Bar dataKey="profit" name="Profit" fill="#f3ca50" radius={[0, 0, 0, 0]} />
+                  <Bar dataKey="loss" name="Loss" fill="#bb6b3f" radius={[0, 0, 0, 0]} />
                 </BarChart>
               </ResponsiveContainer>
             </div>

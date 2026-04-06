@@ -49,29 +49,32 @@ export function AuthForm() {
 
   return (
     <div className="mx-auto grid min-h-[calc(100vh-65px)] max-w-6xl items-center gap-10 px-6 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-      <div className="rounded-[2rem] bg-[linear-gradient(160deg,rgba(15,23,42,0.98),rgba(54,88,71,0.88))] p-8 text-white shadow-xl">
-        <p className="text-sm uppercase tracking-[0.25em] text-white/60">{appConfig.appName} ERP</p>
-        <h1 className="mt-4 font-display text-5xl">
-          Sign in to manage projects, plots, costs, and teams.
-        </h1>
-        <div className="mt-8 space-y-4 text-sm text-white/80">
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            Authenticated users can access the dashboard and CRUD workflows.
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            Managers can create operational records. Admins can delete records.
-          </div>
-          <div className="rounded-2xl border border-white/10 bg-white/5 p-4">
-            New accounts can register here and immediately enter the dashboard.
+      <div className="border border-white/5 bg-surface-container p-8 text-white relative overflow-hidden">
+        <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top_left,rgba(243,202,80,0.08),transparent_60%)]" />
+        <div className="relative">
+          <p className="text-[9px] uppercase tracking-[0.5em] text-primary font-bold mb-6">{appConfig.appName} ERP</p>
+          <h1 className="font-headline font-black text-5xl text-on-surface letter-spacing-custom leading-[0.9]">
+            Sign in to manage projects, plots, costs, and teams.
+          </h1>
+          <div className="mt-8 space-y-3 text-sm text-on-surface-variant">
+            <div className="border border-white/5 bg-white/3 p-4">
+              Authenticated users can access the dashboard and CRUD workflows.
+            </div>
+            <div className="border border-white/5 bg-white/3 p-4">
+              Managers can create operational records. Admins can delete records.
+            </div>
+            <div className="border border-white/5 bg-white/3 p-4">
+              New accounts can register here and immediately enter the dashboard.
+            </div>
           </div>
         </div>
       </div>
 
-      <div className="rounded-[2rem] border border-black/10 bg-white/75 p-8 shadow-sm backdrop-blur">
-        <div className="mb-6 flex gap-3">
+      <div className="border border-white/5 bg-surface-container p-8">
+        <div className="mb-6 flex gap-2">
           <button
-            className={`rounded-full px-5 py-2 text-sm font-medium ${
-              mode === "login" ? "bg-ink text-white" : "bg-slate-100 text-slate-700"
+            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em] transition-all ${
+              mode === "login" ? "gold-gradient text-on-primary" : "border border-white/10 text-on-surface-variant hover:text-on-surface"
             }`}
             onClick={() => setMode("login")}
             type="button"
@@ -79,8 +82,8 @@ export function AuthForm() {
             Login
           </button>
           <button
-            className={`rounded-full px-5 py-2 text-sm font-medium ${
-              mode === "signup" ? "bg-ink text-white" : "bg-slate-100 text-slate-700"
+            className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em] transition-all ${
+              mode === "signup" ? "gold-gradient text-on-primary" : "border border-white/10 text-on-surface-variant hover:text-on-surface"
             }`}
             onClick={() => setMode("signup")}
             type="button"
@@ -91,10 +94,10 @@ export function AuthForm() {
 
         <form className="grid gap-4" onSubmit={handleSubmit}>
           {mode === "signup" ? (
-            <label className="grid gap-2 text-sm">
-              Full name
+            <label className="grid gap-2 text-sm text-on-surface-variant">
+              <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Full name</span>
               <input
-                className="rounded-2xl border border-black/10 px-4 py-3 outline-none"
+                className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                 onChange={(event) => setName(event.target.value)}
                 required
                 value={name}
@@ -102,10 +105,10 @@ export function AuthForm() {
             </label>
           ) : null}
 
-          <label className="grid gap-2 text-sm">
-            Email
+          <label className="grid gap-2 text-sm text-on-surface-variant">
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Email</span>
             <input
-              className="rounded-2xl border border-black/10 px-4 py-3 outline-none"
+              className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
               onChange={(event) => setEmail(event.target.value)}
               required
               type="email"
@@ -113,10 +116,10 @@ export function AuthForm() {
             />
           </label>
 
-          <label className="grid gap-2 text-sm">
-            Password
+          <label className="grid gap-2 text-sm text-on-surface-variant">
+            <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Password</span>
             <input
-              className="rounded-2xl border border-black/10 px-4 py-3 outline-none"
+              className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
               onChange={(event) => setPassword(event.target.value)}
               required
               type="password"
@@ -125,10 +128,10 @@ export function AuthForm() {
           </label>
 
           {mode === "signup" ? (
-            <label className="grid gap-2 text-sm">
-              Role
+            <label className="grid gap-2 text-sm text-on-surface-variant">
+              <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Role</span>
               <select
-                className="rounded-2xl border border-black/10 px-4 py-3 outline-none"
+                className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                 onChange={(event) => setRole(event.target.value)}
                 value={role}
               >
@@ -141,13 +144,13 @@ export function AuthForm() {
           ) : null}
 
           {error ? (
-            <div className="rounded-2xl border border-red-200 bg-red-50 px-4 py-3 text-sm text-red-700">
+            <div className="border border-red-500/20 bg-red-500/10 px-4 py-3 text-sm text-red-400">
               {error}
             </div>
           ) : null}
 
           <button
-            className="rounded-2xl bg-ink px-5 py-3 text-sm font-semibold text-white disabled:opacity-60"
+            className="gold-gradient text-on-primary px-5 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition hover:scale-105 disabled:opacity-60"
             disabled={isSubmitting}
             type="submit"
           >
