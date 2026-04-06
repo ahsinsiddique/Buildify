@@ -2,14 +2,14 @@
 
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
-import { 
-  Trophy, TrendingUp, Calendar, CheckCircle2, User, HardHat, Building2, MapPin, Plus, Edit2, Trash2, X, Phone, ChevronDown, Banknote
+import {
+  Trophy, TrendingUp, Calendar, CheckCircle2, User, HardHat, Building2, MapPin, Plus, Edit2, Trash2, X, Phone, ChevronDown, Banknote, Users, FileText, Receipt
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { fetchWorkerIntelligence, WorkerIntelligenceData, createResource, updateResource, deleteResource, payWorker } from "@/lib/api";
+import { fetchWorkerIntelligence, fetchClients, WorkerIntelligenceData, Client, createResource, updateResource, deleteResource, payWorker } from "@/lib/api";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -98,9 +98,17 @@ export function WorkerManagement() {
   const [editingId, setEditingId] = useState<number | null>(null);
   const [formData, setFormData] = useState({ name: "", role: "", daily_wage: 0, phone: "" });
 
+  const [clients, setClients] = useState<Client[]>([]);
+
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const [payWorkerTarget, setPayWorkerTarget] = useState<any>(null);
-  const [payFormData, setPayFormData] = useState({ amount: 0, projectId: 0, paymentDate: new Date().toISOString().split('T')[0] });
+  const [payFormData, setPayFormData] = useState({
+    amount: 0,
+    projectId: 0,
+    paymentDate: new Date().toISOString().split("T")[0],
+    clientId: 0,
+    invoiceDescription: "",
+  });
 
   const load = async () => {
     if (!session?.token) return;
@@ -108,12 +116,16 @@ export function WorkerManagement() {
     setError("");
 
     try {
-      const next = await fetchWorkerIntelligence(session.token);
+      const [next, clientList] = await Promise.all([
+        fetchWorkerIntelligence(session.token),
+        fetchClients(session.token).catch(() => [] as Client[]),
+      ]);
       if (next.workers.length === 0) {
         setData(defaultData);
       } else {
         setData(next);
       }
+      setClients(clientList);
     } catch (loadError) {
       console.error(loadError);
       setData(defaultData);
@@ -163,7 +175,9 @@ export function WorkerManagement() {
     setPayFormData({
       amount: worker.earnedSalary || worker.dailyWage || 0,
       projectId: worker.assignedProjects?.[0]?.project_id || 0,
-      paymentDate: new Date().toISOString().split('T')[0]
+      paymentDate: new Date().toISOString().split("T")[0],
+      clientId: 0,
+      invoiceDescription: `Labour payment — ${worker.name} (${worker.role})`,
     });
     setIsPayModalOpen(true);
   };
@@ -487,89 +501,188 @@ export function WorkerManagement() {
 
       {/* Pay Worker Modal */}
       <AnimatePresence>
-        {isPayModalOpen && (
+        {isPayModalOpen && payWorkerTarget && (
           <motion.div
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/20 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/30 backdrop-blur-sm"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="w-full max-w-md bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/40"
+              className="w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/40"
             >
-              <div className="p-6 relative">
-                <button 
+              {/* Modal header — worker identity strip */}
+              <div className="bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(54,88,71,0.88))] px-6 pt-6 pb-5 text-white relative">
+                <button
                   onClick={() => setIsPayModalOpen(false)}
-                  className="absolute right-4 top-4 p-2 text-ink/40 hover:bg-ink/5 rounded-full"
+                  className="absolute right-4 top-4 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition"
                 >
-                  <X className="w-5 h-5"/>
+                  <X className="w-5 h-5" />
                 </button>
-                
-                <h3 className="text-2xl font-display font-semibold mb-2">
-                  Pay Worker
-                </h3>
-                <p className="text-sm font-medium text-ink/60 mb-6">
-                  {payWorkerTarget?.name} &bull; Earned: PKR {(payWorkerTarget?.earnedSalary || 0).toLocaleString()}
-                </p>
 
-                <form onSubmit={handlePaySave} className="space-y-4">
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white font-display font-bold text-xl shrink-0">
+                    {payWorkerTarget.name.charAt(0)}
+                  </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Amount to Pay (PKR)</label>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold">Process Payment</p>
+                    <h3 className="text-xl font-display font-semibold mt-0.5">{payWorkerTarget.name}</h3>
+                    <p className="text-sm text-white/60 mt-0.5">{payWorkerTarget.role}</p>
+                  </div>
+                  <div className="ml-auto text-right">
+                    <p className="text-xs text-white/50 uppercase tracking-widest">Computed Salary</p>
+                    <p className="text-2xl font-display font-bold text-emerald-300 mt-0.5">
+                      PKR {(payWorkerTarget.earnedSalary || 0).toLocaleString()}
+                    </p>
+                  </div>
+                </div>
+              </div>
+
+              {/* Form body */}
+              <form onSubmit={handlePaySave} className="p-6 space-y-4">
+
+                {/* Row: Amount + Date */}
+                <div className="grid grid-cols-2 gap-3">
+                  <div>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Amount (PKR)</label>
                     <div className="relative">
-                      <Banknote className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                       <input
                         required
                         type="number"
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
+                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition font-semibold"
                         value={payFormData.amount || ""}
                         onChange={(e) => setPayFormData(p => ({ ...p, amount: parseInt(e.target.value) || 0 }))}
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Project Charge</label>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Payment Date</label>
                     <div className="relative">
-                      <Building2 className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
-                      <select
-                        required
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-11 pr-10 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
-                        value={payFormData.projectId}
-                        onChange={(e) => setPayFormData(p => ({ ...p, projectId: parseInt(e.target.value) || 0 }))}
-                      >
-                        <option value={0} disabled>Select a project</option>
-                        {payWorkerTarget?.assignedProjects?.map((p: any) => (
-                          <option key={p.project_id} value={p.project_id}>{p.project_name}</option>
-                        ))}
-                      </select>
-                      <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <ChevronDown className="w-4 h-4 text-ink/50" />
-                      </div>
-                    </div>
-                  </div>
-                  <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Payment Date</label>
-                    <div className="relative">
-                      <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
                       <input
                         required
                         type="date"
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
+                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
                         value={payFormData.paymentDate}
                         onChange={(e) => setPayFormData(p => ({ ...p, paymentDate: e.target.value }))}
                       />
                     </div>
                   </div>
+                </div>
 
-                  <div className="pt-4 mt-2 border-t border-ink/5 flex justify-end">
-                    <button type="submit" className="bg-moss text-white px-6 py-3 rounded-xl font-semibold hover:bg-moss/90 transition shadow-lg shadow-moss/20 w-full flex items-center justify-center gap-2">
-                       Process Payment & Record
-                    </button>
+                {/* Project selector */}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Charge to Project</label>
+                  <div className="relative">
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                    <select
+                      required
+                      className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-8 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
+                      value={payFormData.projectId}
+                      onChange={(e) => setPayFormData(p => ({ ...p, projectId: parseInt(e.target.value) || 0 }))}
+                    >
+                      <option value={0} disabled>Select project…</option>
+                      {payWorkerTarget.assignedProjects?.map((proj: any) => (
+                        <option key={proj.project_id} value={proj.project_id}>{proj.project_name}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
                   </div>
-                </form>
-              </div>
+                </div>
+
+                {/* Client selector — invoice billing target */}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">
+                    Bill Invoice To (Client)
+                  </label>
+                  <div className="relative">
+                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                    <select
+                      required
+                      className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-8 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
+                      value={payFormData.clientId}
+                      onChange={(e) => setPayFormData(p => ({ ...p, clientId: parseInt(e.target.value) || 0 }))}
+                    >
+                      <option value={0} disabled>Select client…</option>
+                      {clients.map((c) => (
+                        <option key={c.id} value={c.id}>{c.name}</option>
+                      ))}
+                    </select>
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
+                  </div>
+                  {clients.length === 0 && (
+                    <p className="text-xs text-amber-600 mt-1.5 font-medium">No clients loaded — add clients first to generate an invoice.</p>
+                  )}
+                </div>
+
+                {/* Invoice description */}
+                <div>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">
+                    Invoice Description
+                  </label>
+                  <div className="relative">
+                    <FileText className="absolute left-3 top-3 w-4 h-4 text-ink/40" />
+                    <textarea
+                      required
+                      rows={2}
+                      className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition resize-none"
+                      value={payFormData.invoiceDescription}
+                      onChange={(e) => setPayFormData(p => ({ ...p, invoiceDescription: e.target.value }))}
+                      placeholder="e.g. Labour payment — site supervision, week of April 6"
+                    />
+                  </div>
+                </div>
+
+                {/* Receipt preview strip */}
+                {payFormData.amount > 0 && payFormData.projectId > 0 && payFormData.clientId > 0 && (
+                  <motion.div
+                    initial={{ opacity: 0, y: 6 }}
+                    animate={{ opacity: 1, y: 0 }}
+                    className="rounded-2xl border border-dashed border-moss/30 bg-moss/5 p-4 space-y-2"
+                  >
+                    <div className="flex items-center gap-2 mb-3">
+                      <Receipt className="w-4 h-4 text-moss" />
+                      <span className="text-xs font-bold uppercase tracking-widest text-moss">Invoice Preview</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-ink/50">Worker</span>
+                      <span className="font-semibold text-ink">{payWorkerTarget.name}</span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-ink/50">Project</span>
+                      <span className="font-semibold text-ink">
+                        {payWorkerTarget.assignedProjects?.find((p: any) => p.project_id === payFormData.projectId)?.project_name ?? "—"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm">
+                      <span className="text-ink/50">Client</span>
+                      <span className="font-semibold text-ink">
+                        {clients.find(c => c.id === payFormData.clientId)?.name ?? "—"}
+                      </span>
+                    </div>
+                    <div className="flex justify-between text-sm border-t border-moss/20 pt-2 mt-2">
+                      <span className="text-ink/50">Total Billed</span>
+                      <span className="font-display font-bold text-moss text-base">
+                        PKR {payFormData.amount.toLocaleString()}
+                      </span>
+                    </div>
+                  </motion.div>
+                )}
+
+                <div className="pt-2">
+                  <button
+                    type="submit"
+                    className="bg-[#0f172a] text-white px-6 py-3 rounded-xl font-semibold hover:bg-moss transition shadow-lg w-full flex items-center justify-center gap-2 text-sm"
+                  >
+                    <Banknote className="w-4 h-4" />
+                    Process Payment &amp; Generate Invoice
+                  </button>
+                </div>
+              </form>
             </motion.div>
           </motion.div>
         )}
