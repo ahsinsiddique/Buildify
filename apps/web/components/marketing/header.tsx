@@ -9,104 +9,98 @@ import appConfig from "@/lib/app-config";
 const navLinks = [
   { label: "Features", href: "#features" },
   { label: "Pricing", href: "#pricing" },
+  { label: "Dashboard", href: "/dashboard" },
 ];
 
 export function MarketingHeader() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-black/8 bg-[rgba(246,240,232,0.85)] backdrop-blur-md">
-      <div className="mx-auto flex max-w-6xl items-center justify-between px-6 py-4 lg:px-8">
+    <nav className="fixed top-0 w-full z-50 bg-[#131313]/80 backdrop-blur-md border-b border-white/5">
+      <div className="flex justify-between items-center px-8 md:px-12 py-5 max-w-7xl mx-auto">
+
         {/* Logo */}
-        <Link href="/" className="flex items-center gap-2.5">
+        <Link href="/" className="flex items-center gap-3">
           <Image
             src={appConfig.logoUrl}
             alt={appConfig.logoAlt}
             width={32}
             height={32}
-            className="rounded-lg object-contain"
+            className="object-contain"
           />
-          <span className="text-base font-semibold tracking-tight text-[#0f172a]">
+          <span className="text-xl font-black tracking-tighter text-gold font-headline uppercase">
             {appConfig.appName}
           </span>
         </Link>
 
         {/* Desktop nav */}
-        <nav className="hidden items-center gap-6 md:flex">
+        <div className="hidden md:flex gap-10">
           {navLinks.map((link) => (
             <a
               key={link.href}
               href={link.href}
-              className="text-sm text-slate-600 transition-colors hover:text-[#0f172a]"
+              className="text-[#e5e2e1] hover:text-gold transition-colors duration-300 font-headline tracking-tight text-sm uppercase"
             >
               {link.label}
             </a>
           ))}
-        </nav>
+        </div>
 
-        {/* CTA buttons */}
-        <div className="hidden items-center gap-3 md:flex">
+        {/* CTA */}
+        <div className="hidden md:flex items-center gap-3">
           <Link
             href="/auth"
-            className="rounded-full border border-black/12 bg-white/60 px-5 py-2 text-sm font-medium backdrop-blur transition-colors hover:bg-white/80"
+            className="text-[#e5e2e1] hover:text-gold transition-colors text-sm font-headline uppercase tracking-widest"
           >
             Log in
           </Link>
           <Link
             href="/auth"
-            className="rounded-full bg-[#0f172a] px-5 py-2 text-sm font-semibold text-white transition-opacity hover:opacity-90"
+            className="gold-gradient text-[#3d2f00] px-7 py-2.5 font-headline font-bold text-xs uppercase tracking-widest transition-transform active:scale-95 duration-200"
           >
             Get Started
           </Link>
         </div>
 
-        {/* Mobile menu toggle */}
+        {/* Mobile toggle */}
         <button
-          className="flex h-9 w-9 items-center justify-center rounded-lg border border-black/10 bg-white/60 md:hidden"
+          className="flex md:hidden h-9 w-9 items-center justify-center border border-white/10"
           onClick={() => setMenuOpen((o) => !o)}
           aria-label="Toggle menu"
         >
           <span className="block h-4 w-5 relative">
-            <span
-              className={`absolute left-0 h-0.5 w-full bg-[#0f172a] transition-all ${menuOpen ? "top-[7px] rotate-45" : "top-0"}`}
-            />
-            <span
-              className={`absolute left-0 top-[7px] h-0.5 w-full bg-[#0f172a] transition-opacity ${menuOpen ? "opacity-0" : ""}`}
-            />
-            <span
-              className={`absolute left-0 h-0.5 w-full bg-[#0f172a] transition-all ${menuOpen ? "top-[7px] -rotate-45" : "top-[14px]"}`}
-            />
+            <span className={`absolute left-0 h-0.5 w-full bg-gold transition-all ${menuOpen ? "top-[7px] rotate-45" : "top-0"}`} />
+            <span className={`absolute left-0 top-[7px] h-0.5 w-full bg-gold transition-opacity ${menuOpen ? "opacity-0" : ""}`} />
+            <span className={`absolute left-0 h-0.5 w-full bg-gold transition-all ${menuOpen ? "top-[7px] -rotate-45" : "top-[14px]"}`} />
           </span>
         </button>
       </div>
 
       {/* Mobile menu */}
       {menuOpen && (
-        <div className="border-t border-black/8 bg-[rgba(246,240,232,0.95)] px-6 py-4 md:hidden">
-          <nav className="flex flex-col gap-3">
+        <div className="md:hidden bg-[#1c1b1b] border-t border-white/5 px-8 py-6">
+          <nav className="flex flex-col gap-5">
             {navLinks.map((link) => (
               <a
                 key={link.href}
                 href={link.href}
-                className="text-sm text-slate-600"
+                className="text-sm text-[#d0c5af] uppercase tracking-widest font-headline"
                 onClick={() => setMenuOpen(false)}
               >
                 {link.label}
               </a>
             ))}
-            <hr className="my-1 border-black/10" />
-            <Link href="/auth" className="text-sm font-medium text-slate-700">
-              Log in
-            </Link>
+            <hr className="border-white/10" />
+            <Link href="/auth" className="text-sm text-[#e5e2e1] uppercase tracking-widest font-headline">Log in</Link>
             <Link
               href="/auth"
-              className="rounded-full bg-[#0f172a] px-5 py-2 text-center text-sm font-semibold text-white"
+              className="gold-gradient text-[#3d2f00] px-6 py-3 text-center text-xs font-bold uppercase tracking-widest font-headline"
             >
               Get Started
             </Link>
           </nav>
         </div>
       )}
-    </header>
+    </nav>
   );
 }
