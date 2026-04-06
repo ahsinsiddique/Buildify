@@ -188,6 +188,24 @@ export async function fetchProjects(token: string) {
   return apiRequest<Project[]>("/projects", { token });
 }
 
+export type WorkerPayment = {
+  expense_id: number;
+  amount: number;
+  description: string;
+  expense_date: string;
+  project_id: number | null;
+  project_name: string | null;
+  invoice_id: number | null;
+  invoice_number: string | null;
+  invoice_status: string | null;
+  client_id: number | null;
+  client_name: string | null;
+};
+
+export async function fetchWorkerPayments(workerId: number, token: string) {
+  return apiRequest<WorkerPayment[]>(`/workers/${workerId}/payments`, { token });
+}
+
 export async function payWorker(
   id: string | number,
   token: string,

@@ -3,13 +3,13 @@
 import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence, Variants } from "framer-motion";
 import {
-  Trophy, TrendingUp, Calendar, CheckCircle2, User, HardHat, Building2, MapPin, Plus, Edit2, Trash2, X, Phone, ChevronDown, Banknote, Users, FileText, Receipt
+  Trophy, TrendingUp, Calendar, CheckCircle2, User, HardHat, Building2, MapPin, Plus, Edit2, Trash2, X, Phone, ChevronDown, Banknote, Users, FileText, Receipt, History, Filter, Search
 } from "lucide-react";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
 import { useAuth } from "@/components/auth/auth-provider";
-import { fetchWorkerIntelligence, fetchClients, fetchProjects, WorkerIntelligenceData, Client, Project, createResource, updateResource, deleteResource, payWorker } from "@/lib/api";
+import { fetchWorkerIntelligence, fetchClients, fetchProjects, fetchWorkerPayments, WorkerIntelligenceData, Client, Project, WorkerPayment, createResource, updateResource, deleteResource, payWorker } from "@/lib/api";
 
 function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -101,6 +101,14 @@ export function WorkerManagement() {
   const [clients, setClients] = useState<Client[]>([]);
   const [projects, setProjects] = useState<Project[]>([]);
 
+  // Payment history modal
+  const [historyWorker, setHistoryWorker] = useState<any>(null);
+  const [payments, setPayments] = useState<WorkerPayment[]>([]);
+  const [paymentsLoading, setPaymentsLoading] = useState(false);
+  const [filterProject, setFilterProject] = useState<string>("all");
+  const [filterStatus, setFilterStatus] = useState<string>("all");
+  const [filterSearch, setFilterSearch] = useState<string>("");
+
   const [isPayModalOpen, setIsPayModalOpen] = useState(false);
   const [payWorkerTarget, setPayWorkerTarget] = useState<any>(null);
   const [payFormData, setPayFormData] = useState({
@@ -183,6 +191,24 @@ export function WorkerManagement() {
       invoiceDescription: `Labour payment — ${worker.name} (${worker.role})`,
     });
     setIsPayModalOpen(true);
+  };
+
+  const handleOpenHistory = async (worker: any) => {
+    setHistoryWorker(worker);
+    setFilterProject("all");
+    setFilterStatus("all");
+    setFilterSearch("");
+    setPayments([]);
+    if (!session?.token) return;
+    setPaymentsLoading(true);
+    try {
+      const rows = await fetchWorkerPayments(worker.id, session.token);
+      setPayments(rows);
+    } catch {
+      setPayments([]);
+    } finally {
+      setPaymentsLoading(false);
+    }
   };
 
   const handlePaySave = async (e: React.FormEvent) => {
@@ -286,7 +312,10 @@ export function WorkerManagement() {
         <div className="grid gap-4 mt-8">
           {data.workers.map((worker) => (
             <GlassCard key={worker.id} className="p-0 group relative cursor-default">
-              <div className="p-6 md:p-8 flex flex-col lg:flex-row gap-6 lg:items-center justify-between">
+              <div
+                className="p-6 md:p-8 flex flex-col lg:flex-row gap-6 lg:items-center justify-between cursor-pointer"
+                onClick={() => handleOpenHistory(worker)}
+              >
                 
                 {/* Worker Identity */}
                 <div className="flex items-start gap-4 lg:w-1/4">
@@ -370,23 +399,26 @@ export function WorkerManagement() {
               </div>
 
               {/* CRUD Actions */}
-              <div className="absolute top-4 right-4 flex opacity-0 group-hover:opacity-100 transition-opacity">
-                <button 
-                  onClick={() => handleOpenPayModal(worker)} 
+              <div
+                className="absolute top-4 right-4 flex opacity-0 group-hover:opacity-100 transition-opacity"
+                onClick={(e) => e.stopPropagation()}
+              >
+                <button
+                  onClick={() => handleOpenPayModal(worker)}
                   className="p-2 text-ink/40 hover:text-emerald-500 bg-white/50 hover:bg-white rounded-full transition"
                   title="Pay Worker"
                 >
                   <Banknote className="w-4 h-4" />
                 </button>
-                <button 
-                  onClick={() => handleOpenModal(worker)} 
+                <button
+                  onClick={() => handleOpenModal(worker)}
                   className="p-2 text-ink/40 hover:text-moss bg-white/50 hover:bg-white rounded-full transition"
                   title="Edit Worker"
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
-                <button 
-                  onClick={() => handleDelete(worker.id)} 
+                <button
+                  onClick={() => handleDelete(worker.id)}
                   className="p-2 text-ink/40 hover:text-red-500 bg-white/50 hover:bg-white rounded-full transition"
                   title="Delete Worker"
                 >
@@ -496,6 +528,232 @@ export function WorkerManagement() {
                     </button>
                   </div>
                 </form>
+              </div>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
+
+      {/* Payment History Modal */}
+      <AnimatePresence>
+        {historyWorker && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/30 backdrop-blur-sm"
+            onClick={() => setHistoryWorker(null)}
+          >
+            <motion.div
+              initial={{ scale: 0.96, y: 16 }}
+              animate={{ scale: 1, y: 0 }}
+              exit={{ scale: 0.96, y: 16 }}
+              className="w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/40 max-h-[90vh] flex flex-col"
+              onClick={(e) => e.stopPropagation()}
+            >
+              {/* Header */}
+              <div className="bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(54,88,71,0.88))] px-6 pt-6 pb-5 text-white shrink-0">
+                <button
+                  onClick={() => setHistoryWorker(null)}
+                  className="absolute right-6 top-5 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition"
+                >
+                  <X className="w-5 h-5" />
+                </button>
+                <div className="flex items-center gap-4">
+                  <div className="w-12 h-12 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white font-display font-bold text-xl shrink-0">
+                    {historyWorker.name.charAt(0)}
+                  </div>
+                  <div>
+                    <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold flex items-center gap-1.5">
+                      <History className="w-3.5 h-3.5" /> Payment History
+                    </p>
+                    <h3 className="text-xl font-display font-semibold mt-0.5">{historyWorker.name}</h3>
+                    <p className="text-sm text-white/60">{historyWorker.role}</p>
+                  </div>
+                  <div className="ml-auto flex gap-6 text-right">
+                    <div>
+                      <p className="text-xs text-white/50 uppercase tracking-widest">Payments</p>
+                      <p className="text-2xl font-display font-bold text-white mt-0.5">{payments.length}</p>
+                    </div>
+                    <div>
+                      <p className="text-xs text-white/50 uppercase tracking-widest">Total Paid</p>
+                      <p className="text-2xl font-display font-bold text-emerald-300 mt-0.5">
+                        PKR {payments.reduce((s, p) => s + Number(p.amount), 0).toLocaleString()}
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              {/* Filters */}
+              <div className="px-6 py-4 border-b border-ink/8 bg-ink/2 shrink-0 flex flex-wrap gap-3 items-center">
+                {/* Search */}
+                <div className="relative flex-1 min-w-[160px]">
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                  <input
+                    type="text"
+                    placeholder="Search invoice or description…"
+                    className="w-full bg-white border border-ink/10 rounded-xl pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/30 transition"
+                    value={filterSearch}
+                    onChange={(e) => setFilterSearch(e.target.value)}
+                  />
+                </div>
+
+                {/* Project filter */}
+                <div className="relative min-w-[160px]">
+                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink/40" />
+                  <select
+                    className="w-full bg-white border border-ink/10 rounded-xl pl-9 pr-8 py-2 text-sm outline-none focus:ring-2 focus:ring-moss/20 appearance-none"
+                    value={filterProject}
+                    onChange={(e) => setFilterProject(e.target.value)}
+                  >
+                    <option value="all">All Projects</option>
+                    {Array.from(new Set(payments.map(p => p.project_name).filter(Boolean))).map(name => (
+                      <option key={name!} value={name!}>{name}</option>
+                    ))}
+                  </select>
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink/40 pointer-events-none" />
+                </div>
+
+                {/* Status filter */}
+                <div className="flex gap-1.5">
+                  {["all", "Paid", "Pending", "Overdue"].map(s => (
+                    <button
+                      key={s}
+                      onClick={() => setFilterStatus(s)}
+                      className={cn(
+                        "px-3 py-1.5 rounded-full text-xs font-semibold transition",
+                        filterStatus === s
+                          ? "bg-ink text-white"
+                          : "bg-ink/5 text-ink/60 hover:bg-ink/10"
+                      )}
+                    >
+                      {s === "all" ? "All Status" : s}
+                    </button>
+                  ))}
+                </div>
+              </div>
+
+              {/* Grid */}
+              <div className="overflow-y-auto flex-1">
+                {paymentsLoading ? (
+                  <div className="flex items-center justify-center h-40 text-ink/40 text-sm">Loading…</div>
+                ) : (() => {
+                  const filtered = payments.filter(p => {
+                    if (filterProject !== "all" && p.project_name !== filterProject) return false;
+                    if (filterStatus !== "all" && p.invoice_status !== filterStatus) return false;
+                    if (filterSearch) {
+                      const q = filterSearch.toLowerCase();
+                      if (
+                        !p.invoice_number?.toLowerCase().includes(q) &&
+                        !p.description?.toLowerCase().includes(q) &&
+                        !p.client_name?.toLowerCase().includes(q)
+                      ) return false;
+                    }
+                    return true;
+                  });
+
+                  if (filtered.length === 0) {
+                    return (
+                      <div className="flex flex-col items-center justify-center h-40 text-ink/40 gap-2">
+                        <Receipt className="w-8 h-8 opacity-40" />
+                        <p className="text-sm font-medium">No payments match the filters</p>
+                      </div>
+                    );
+                  }
+
+                  return (
+                    <table className="w-full text-sm">
+                      <thead className="sticky top-0 bg-white border-b border-ink/8">
+                        <tr>
+                          {["Invoice #", "Date", "Project", "Client", "Amount", "Status"].map(h => (
+                            <th key={h} className="px-5 py-3 text-left text-[11px] uppercase tracking-widest text-ink/40 font-bold">
+                              {h}
+                            </th>
+                          ))}
+                        </tr>
+                      </thead>
+                      <tbody>
+                        {filtered.map((p, i) => (
+                          <tr
+                            key={p.expense_id}
+                            className={cn(
+                              "border-b border-ink/5 transition-colors hover:bg-moss/5",
+                              i % 2 === 0 ? "bg-white" : "bg-ink/[0.015]"
+                            )}
+                          >
+                            <td className="px-5 py-3.5 font-mono text-xs text-ink/70">
+                              {p.invoice_number ?? <span className="text-ink/30">—</span>}
+                            </td>
+                            <td className="px-5 py-3.5 text-ink/70 whitespace-nowrap">
+                              {new Date(p.expense_date).toLocaleDateString("en-PK", {
+                                day: "2-digit", month: "short", year: "numeric"
+                              })}
+                            </td>
+                            <td className="px-5 py-3.5">
+                              {p.project_name
+                                ? <span className="flex items-center gap-1.5"><MapPin className="w-3 h-3 text-moss shrink-0" />{p.project_name}</span>
+                                : <span className="text-ink/30">—</span>}
+                            </td>
+                            <td className="px-5 py-3.5 text-ink/70">
+                              {p.client_name ?? <span className="text-ink/30">—</span>}
+                            </td>
+                            <td className="px-5 py-3.5 font-display font-semibold text-moss">
+                              PKR {Number(p.amount).toLocaleString()}
+                            </td>
+                            <td className="px-5 py-3.5">
+                              {p.invoice_status ? (
+                                <span className={cn(
+                                  "inline-block px-2.5 py-0.5 rounded-full text-[11px] font-bold uppercase tracking-wider",
+                                  p.invoice_status === "Paid"
+                                    ? "bg-emerald-50 text-emerald-700 border border-emerald-100"
+                                    : p.invoice_status === "Overdue"
+                                    ? "bg-red-50 text-red-700 border border-red-100"
+                                    : "bg-amber-50 text-amber-700 border border-amber-100"
+                                )}>
+                                  {p.invoice_status}
+                                </span>
+                              ) : <span className="text-ink/30">—</span>}
+                            </td>
+                          </tr>
+                        ))}
+                      </tbody>
+                    </table>
+                  );
+                })()}
+              </div>
+
+              {/* Footer total for filtered set */}
+              <div className="px-6 py-3 border-t border-ink/8 bg-ink/2 shrink-0 flex justify-between items-center">
+                <span className="text-xs text-ink/40 font-medium">
+                  {(() => {
+                    const count = payments.filter(p => {
+                      if (filterProject !== "all" && p.project_name !== filterProject) return false;
+                      if (filterStatus !== "all" && p.invoice_status !== filterStatus) return false;
+                      if (filterSearch) {
+                        const q = filterSearch.toLowerCase();
+                        return p.invoice_number?.toLowerCase().includes(q) ||
+                          p.description?.toLowerCase().includes(q) ||
+                          p.client_name?.toLowerCase().includes(q);
+                      }
+                      return true;
+                    }).length;
+                    return `${count} record${count !== 1 ? "s" : ""}`;
+                  })()}
+                </span>
+                <span className="text-sm font-display font-bold text-ink">
+                  Filtered total: PKR {payments.filter(p => {
+                    if (filterProject !== "all" && p.project_name !== filterProject) return false;
+                    if (filterStatus !== "all" && p.invoice_status !== filterStatus) return false;
+                    if (filterSearch) {
+                      const q = filterSearch.toLowerCase();
+                      return p.invoice_number?.toLowerCase().includes(q) ||
+                        p.description?.toLowerCase().includes(q) ||
+                        p.client_name?.toLowerCase().includes(q);
+                    }
+                    return true;
+                  }).reduce((s, p) => s + Number(p.amount), 0).toLocaleString()}
+                </span>
               </div>
             </motion.div>
           </motion.div>
