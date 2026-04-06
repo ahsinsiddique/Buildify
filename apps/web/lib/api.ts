@@ -167,7 +167,28 @@ export async function fetchWorkerIntelligence(token: string) {
   return apiRequest<WorkerIntelligenceData>("/workers/intelligence", { token });
 }
 
-export async function payWorker(id: string | number, token: string, payload: { amount: number, projectId: number, paymentDate: string }) {
+export type Client = {
+  id: number;
+  name: string;
+  email?: string;
+  phone?: string;
+};
+
+export async function fetchClients(token: string) {
+  return apiRequest<Client[]>("/clients", { token });
+}
+
+export async function payWorker(
+  id: string | number,
+  token: string,
+  payload: {
+    amount: number;
+    projectId: number;
+    paymentDate: string;
+    clientId: number;
+    invoiceDescription: string;
+  }
+) {
   return apiRequest(`/workers/${id}/pay`, {
     method: "POST",
     token,
