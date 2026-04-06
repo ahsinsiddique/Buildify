@@ -1,8 +1,10 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
+import appConfig from "@/lib/app-config";
 import { navigationItems } from "@/lib/dashboard-data";
 
 export function Sidebar() {
@@ -11,9 +13,20 @@ export function Sidebar() {
   return (
     <aside className="w-full border-b border-black/10 bg-[linear-gradient(180deg,#10201f,#0f172a)] p-5 text-white lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r">
       <div className="mb-8">
-        <p className="text-xs uppercase tracking-[0.3em] text-white/55">Builder ERP</p>
-        <h1 className="mt-3 font-display text-3xl">BrickFlow</h1>
-        <p className="mt-3 text-sm text-white/70">
+        <div className="flex items-center gap-3 mb-3">
+          <Image
+            src={appConfig.logoUrl}
+            alt={appConfig.logoAlt}
+            width={36}
+            height={36}
+            className="rounded-lg object-contain"
+          />
+          <div>
+            <p className="text-[10px] uppercase tracking-[0.3em] text-white/55">{appConfig.appTag}</p>
+            <h1 className="font-display text-xl leading-tight">{appConfig.appName}</h1>
+          </div>
+        </div>
+        <p className="text-sm text-white/70">
           Construction, property, CRM, and finance in one control panel.
         </p>
       </div>

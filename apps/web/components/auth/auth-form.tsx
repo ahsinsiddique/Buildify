@@ -4,6 +4,7 @@ import { useSearchParams } from "next/navigation";
 import { useRouter } from "next/navigation";
 import { FormEvent, useMemo, useState } from "react";
 
+import appConfig from "@/lib/app-config";
 import { useAuth } from "./auth-provider";
 
 type Mode = "login" | "signup";
@@ -47,9 +48,9 @@ export function AuthForm() {
   }
 
   return (
-    <div className="mx-auto grid min-h-screen max-w-6xl items-center gap-10 px-6 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
+    <div className="mx-auto grid min-h-[calc(100vh-65px)] max-w-6xl items-center gap-10 px-6 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
       <div className="rounded-[2rem] bg-[linear-gradient(160deg,rgba(15,23,42,0.98),rgba(54,88,71,0.88))] p-8 text-white shadow-xl">
-        <p className="text-sm uppercase tracking-[0.25em] text-white/60">BrickFlow ERP</p>
+        <p className="text-sm uppercase tracking-[0.25em] text-white/60">{appConfig.appName} ERP</p>
         <h1 className="mt-4 font-display text-5xl">
           Sign in to manage projects, plots, costs, and teams.
         </h1>
