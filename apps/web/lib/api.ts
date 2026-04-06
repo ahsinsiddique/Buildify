@@ -206,6 +206,50 @@ export async function fetchWorkerPayments(workerId: number, token: string) {
   return apiRequest<WorkerPayment[]>(`/workers/${workerId}/payments`, { token });
 }
 
+export type InvoiceListItem = {
+  id: number;
+  invoice_number: string;
+  client_id: number | null;
+  client_name: string | null;
+  project_id: number | null;
+  project_name: string | null;
+  total_amount: number;
+  amount_paid: number;
+  status: string;
+  issued_date: string;
+  due_date: string | null;
+};
+
+export type InvoiceExpense = {
+  id: number;
+  amount: number;
+  description: string | null;
+  expense_date: string;
+  category: string;
+  worker_id: number | null;
+  worker_name: string | null;
+  worker_role: string | null;
+};
+
+export type InvoiceDetail = {
+  invoice: InvoiceListItem & {
+    client_phone: string | null;
+    client_email: string | null;
+    project_status: string | null;
+    project_budget: number | null;
+    project_progress: number | null;
+  };
+  expenses: InvoiceExpense[];
+};
+
+export async function fetchInvoices(token: string) {
+  return apiRequest<InvoiceListItem[]>("/invoices", { token });
+}
+
+export async function fetchInvoiceDetail(id: number, token: string) {
+  return apiRequest<InvoiceDetail>(`/invoices/${id}/detail`, { token });
+}
+
 export async function payWorker(
   id: string | number,
   token: string,
