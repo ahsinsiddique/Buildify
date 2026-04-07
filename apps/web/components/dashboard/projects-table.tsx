@@ -20,7 +20,7 @@ export function ProjectsTable({ rows = [] }: { rows?: ProjectRow[] }) {
     : [];
 
   return (
-    <div className="border border-white/5 bg-surface-container p-6">
+    <div className="border border-on-surface/7 bg-surface-container p-6">
       <div className="mb-6 flex items-center justify-between">
         <div>
           <p className="text-[9px] uppercase tracking-[0.35em] text-on-surface-variant font-bold">Projects</p>
@@ -42,7 +42,7 @@ export function ProjectsTable({ rows = [] }: { rows?: ProjectRow[] }) {
           <tbody>
             {projects.length ? (
               projects.map((project) => (
-                <tr key={project.id} className="border-t border-white/5 text-sm text-on-surface-variant hover:bg-white/3 transition-colors">
+                <tr key={project.id} className="border-t border-on-surface/7 text-sm text-on-surface-variant hover:bg-on-surface/5 transition-colors">
                   <td className="py-4 font-bold text-on-surface pr-4">{project.name}</td>
                   <td className="py-4 pr-4">{project.budget}</td>
                   <td className="py-4 pr-4">{project.progress}</td>
@@ -50,7 +50,7 @@ export function ProjectsTable({ rows = [] }: { rows?: ProjectRow[] }) {
                 </tr>
               ))
             ) : (
-              <tr className="border-t border-white/5">
+              <tr className="border-t border-on-surface/7">
                 <td className="py-6 text-sm text-on-surface-variant" colSpan={4}>
                   No project data yet.
                 </td>

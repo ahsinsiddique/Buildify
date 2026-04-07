@@ -219,7 +219,7 @@ export function ResourceManager({
 
   return (
     <div className="grid gap-6 xl:grid-cols-[0.95fr_1.05fr]">
-      <section className="relative overflow-hidden border border-white/5 bg-surface-container p-6">
+      <section className="relative overflow-hidden border border-on-surface/7 bg-surface-container p-6">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-24 bg-[radial-gradient(circle_at_top_left,rgba(243,202,80,0.08),transparent_55%),radial-gradient(circle_at_top_right,rgba(243,202,80,0.04),transparent_40%)]" />
         <div className="relative">
           <div className="mb-5 inline-flex rounded-full border border-primary/30 bg-primary/10 px-4 py-2 text-xs uppercase tracking-[0.28em] text-primary">
@@ -249,7 +249,7 @@ export function ResourceManager({
               <span className="font-medium">{field.label}</span>
               {field.type === "textarea" ? (
                 <textarea
-                  className="min-h-24 border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+                  className="min-h-24 border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                   onChange={(event) =>
                     setFormValues((current) => ({
                       ...current,
@@ -261,7 +261,7 @@ export function ResourceManager({
                 />
               ) : field.type === "select" ? (
                 <select
-                  className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+                  className="border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                   onChange={(event) =>
                     setFormValues((current) => ({
                       ...current,
@@ -280,7 +280,7 @@ export function ResourceManager({
                 </select>
               ) : (
                 <input
-                  className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+                  className="border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                   onChange={(event) =>
                     setFormValues((current) => ({
                       ...current,
@@ -305,7 +305,7 @@ export function ResourceManager({
             </button>
             {editingId ? (
               <button
-                className="border border-white/10 bg-surface-container-high text-on-surface-variant px-5 py-3 text-sm transition hover:bg-surface-container-highest hover:text-on-surface"
+                className="border border-on-surface/10 bg-surface-container-high text-on-surface-variant px-5 py-3 text-sm transition hover:bg-surface-container-highest hover:text-on-surface"
                 onClick={resetForm}
                 type="button"
               >
@@ -316,13 +316,13 @@ export function ResourceManager({
         </form>
       </section>
 
-      <section className="border border-white/5 bg-surface-container p-6">
+      <section className="border border-on-surface/7 bg-surface-container p-6">
         <div className="mb-5 flex flex-col gap-3 sm:flex-row sm:items-end sm:justify-between">
           <div>
             <p className="text-[9px] uppercase tracking-[0.35em] text-on-surface-variant font-bold">Live Records</p>
             <h4 className="mt-2 font-headline font-black text-3xl text-on-surface">Browse and manage</h4>
           </div>
-          <div className="border border-white/10 bg-surface-container-high px-4 py-2 text-[9px] uppercase tracking-[0.25em] text-on-surface-variant">
+          <div className="border border-on-surface/10 bg-surface-container-high px-4 py-2 text-[9px] uppercase tracking-[0.25em] text-on-surface-variant">
             {rows.length} record{rows.length === 1 ? "" : "s"}
           </div>
         </div>
@@ -348,7 +348,7 @@ export function ResourceManager({
               ) : rows.length ? (
                 rows.map((row) => (
                   <tr
-                    className="border-t border-white/5 text-sm text-on-surface-variant transition hover:bg-white/3"
+                    className="border-t border-white/5 text-sm text-on-surface-variant transition hover:bg-on-surface/5"
                     key={row.id}
                   >
                     {columns.map((column) => (
@@ -359,7 +359,7 @@ export function ResourceManager({
                     <td className="py-4">
                       <div className="flex flex-wrap gap-2">
                         <button
-                          className="border border-white/10 px-3 py-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors disabled:opacity-40"
+                          className="border border-on-surface/10 px-3 py-1 text-xs text-on-surface-variant hover:text-on-surface transition-colors disabled:opacity-40"
                           disabled={!canEdit}
                           onClick={() => startEdit(row)}
                           type="button"

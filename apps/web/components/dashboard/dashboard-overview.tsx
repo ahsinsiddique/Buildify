@@ -30,11 +30,33 @@ const fallbackStats: DashboardStats = {
   spendingTrend: []
 };
 
+/** Watches the <html> dark class and returns chart-safe color values */
+function useChartColors() {
+  const [isDark, setIsDark] = useState(true);
+
+  useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+
+  return {
+    grid:         isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)",
+    tick:         isDark ? "#d0c5af"                : "#5c5349",
+    tooltipBg:    isDark ? "rgba(17,17,17,0.97)"   : "rgba(250,248,244,0.97)",
+    tooltipBorder:isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.08)",
+    tooltipColor: isDark ? "#e5e2e1"                : "#1a1714",
+  };
+}
+
 export function DashboardOverview() {
   const { session } = useAuth();
   const [stats, setStats] = useState<DashboardStats>(fallbackStats);
   const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(true);
+  const chart = useChartColors();
 
   useEffect(() => {
     async function loadStats() {
@@ -73,7 +95,7 @@ export function DashboardOverview() {
       {
         title: "Total Expenses",
         value: `PKR ${stats.summary.total_expenses ?? "0"}`,
-        accent: "text-ink"
+        accent: "text-primary"
       },
       {
         title: "Total Invoiced",
@@ -113,7 +135,7 @@ export function DashboardOverview() {
       ) : null}
 
       <section className="grid gap-6 xl:grid-cols-[1.05fr_0.95fr]">
-        <div className="border border-white/5 bg-surface-container p-6">
+        <div className="border border-on-surface/7 bg-surface-container p-6">
           <div className="mb-6">
             <p className="text-[9px] uppercase tracking-[0.35em] text-on-surface-variant font-bold">Analytics</p>
             <h3 className="mt-2 font-headline font-black text-2xl text-on-surface">Daily expenses</h3>
@@ -122,15 +144,15 @@ export function DashboardOverview() {
           <div className="h-72">
             <ResponsiveContainer height="100%" width="100%">
               <BarChart data={spendingTrend}>
-                <CartesianGrid stroke="rgba(255,255,255,0.05)" strokeDasharray="3 3" vertical={false} />
-                <XAxis axisLine={false} dataKey="day" tickLine={false} tick={{ fill: "#d0c5af", fontSize: 11 }} />
-                <YAxis axisLine={false} tickLine={false} tick={{ fill: "#d0c5af", fontSize: 11 }} />
+                <CartesianGrid stroke={chart.grid} strokeDasharray="3 3" vertical={false} />
+                <XAxis axisLine={false} dataKey="day" tickLine={false} tick={{ fill: chart.tick, fontSize: 11 }} />
+                <YAxis axisLine={false} tickLine={false} tick={{ fill: chart.tick, fontSize: 11 }} />
                 <Tooltip
                   contentStyle={{
-                    background: "rgba(17,17,17,0.97)",
-                    border: "1px solid rgba(255,255,255,0.05)",
+                    background: chart.tooltipBg,
+                    border: `1px solid ${chart.tooltipBorder}`,
                     borderRadius: "0px",
-                    color: "#e5e2e1",
+                    color: chart.tooltipColor,
                   }}
                 />
                 <Bar dataKey="total" fill="#f3ca50" radius={[0, 0, 0, 0]} />

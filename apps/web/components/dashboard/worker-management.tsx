@@ -76,13 +76,13 @@ const GlassCard = ({ children, className }: { children: React.ReactNode; classNa
     whileHover={{ y: -4, transition: { duration: 0.3 } }}
     className={cn(
       "relative overflow-hidden p-6",
-      "bg-surface-container border border-white/5",
+      "bg-surface-container border border-on-surface/7",
       "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]",
       "transition-all duration-300",
       className
     )}
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/3 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-gradient-to-br from-on-surface/3 to-transparent pointer-events-none" />
     <div className="relative z-10">{children}</div>
   </motion.div>
 );
@@ -245,12 +245,12 @@ export function WorkerManagement() {
       >
         <motion.div variants={itemVariants} className="flex flex-col md:flex-row md:items-end justify-between mb-8 gap-4">
           <div>
-            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-white/50 backdrop-blur-md border border-white/60 mb-4 shadow-sm">
-              <HardHat className="w-4 h-4 text-ink/70" />
-              <span className="text-xs uppercase tracking-[0.2em] font-bold text-ink/70">Resource Manager</span>
+            <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-surface-container-high border border-on-surface/10 mb-4 shadow-sm">
+              <HardHat className="w-4 h-4 text-on-surface/70" />
+              <span className="text-xs uppercase tracking-[0.2em] font-bold text-on-surface/70">Resource Manager</span>
             </div>
             <div className="flex items-center justify-between gap-4">
-              <h1 className="text-4xl md:text-5xl font-display text-ink font-bold tracking-tight">
+              <h1 className="text-4xl md:text-5xl font-headline text-on-surface font-bold tracking-tight">
                 Smart Worker Management
               </h1>
               <button 
@@ -260,7 +260,7 @@ export function WorkerManagement() {
                 <Plus className="w-4 h-4" /> Add Worker
               </button>
             </div>
-            <p className="text-ink/60 mt-3 text-lg max-w-2xl">
+            <p className="text-on-surface-variant mt-3 text-lg max-w-2xl">
               Track attendance, monitor productivity scores, overview multi-project assignments, and auto-calculate salaries based on presence.
             </p>
             <button 
@@ -281,7 +281,7 @@ export function WorkerManagement() {
               </div>
               <div className="flex-1 z-10">
                 <span className="text-xs uppercase tracking-[0.2em] font-semibold text-emerald-200">Best Performing Worker</span>
-                <h3 className="text-4xl font-display font-semibold mt-2 text-white">
+                <h3 className="text-4xl font-headline font-semibold mt-2 text-white">
                   {data.summary.bestWorker?.name || "Pending..."}
                 </h3>
                 <p className="text-white/70 mt-2 text-sm leading-relaxed max-w-sm">
@@ -290,7 +290,7 @@ export function WorkerManagement() {
               </div>
               <div className="flex items-center justify-center z-10 border-l border-white/10 pl-6 md:min-w-[150px]">
                 <div className="text-center">
-                  <div className="text-5xl font-display font-bold text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 to-white">
+                  <div className="text-5xl font-headline font-bold text-transparent bg-clip-text bg-gradient-to-br from-emerald-300 to-white">
                     {data.summary.bestWorker?.score || 0}
                   </div>
                   <div className="text-xs font-medium uppercase tracking-widest text-emerald-100/70 mt-1">Prod Score</div>
@@ -300,11 +300,11 @@ export function WorkerManagement() {
           </GlassCard>
 
           <GlassCard>
-             <div className="p-2 bg-ink/5 rounded-2xl w-fit mb-4">
-                <User className="w-6 h-6 text-ink" />
+             <div className="p-2 bg-on-surface/5 rounded-2xl w-fit mb-4">
+                <User className="w-6 h-6 text-on-surface" />
              </div>
-             <p className="text-sm font-medium text-ink/60">Total Workforce</p>
-             <h3 className="text-4xl font-display font-semibold mt-1 text-ink">{data.summary.totalWorkers}</h3>
+             <p className="text-sm font-medium text-on-surface-variant">Total Workforce</p>
+             <h3 className="text-4xl font-headline font-semibold mt-1 text-on-surface">{data.summary.totalWorkers}</h3>
           </GlassCard>
         </div>
 
@@ -319,13 +319,13 @@ export function WorkerManagement() {
                 
                 {/* Worker Identity */}
                 <div className="flex items-start gap-4 lg:w-1/4">
-                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-moss to-ink flex items-center justify-center text-white font-display font-bold text-xl shadow-lg shadow-moss/20 shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-gradient-to-br from-moss to-ink flex items-center justify-center text-white font-headline font-bold text-xl shadow-lg shadow-moss/20 shrink-0">
                     {worker.name.charAt(0)}
                   </div>
                   <div>
-                    <h3 className="text-xl font-bold text-ink">{worker.name}</h3>
-                    <p className="text-sm font-medium text-ink/50 uppercase tracking-widest mt-1">{worker.role}</p>
-                    <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-ink/40 bg-ink/5 px-2.5 py-1 rounded-md w-fit">
+                    <h3 className="text-xl font-bold text-on-surface">{worker.name}</h3>
+                    <p className="text-sm font-medium text-on-surface/50 uppercase tracking-widest mt-1">{worker.role}</p>
+                    <div className="mt-3 flex items-center gap-1.5 text-xs font-semibold text-on-surface/40 bg-on-surface/5 px-2.5 py-1 rounded-md w-fit">
                       <TrendingUp className="w-3.5 h-3.5" /> PKR {worker.dailyWage.toLocaleString()}/day
                     </div>
                   </div>
@@ -333,24 +333,24 @@ export function WorkerManagement() {
 
                 {/* Assignments */}
                 <div className="lg:w-1/4">
-                   <p className="text-xs uppercase tracking-widest text-ink/40 font-semibold mb-3">Mobilization</p>
+                   <p className="text-xs uppercase tracking-widest text-on-surface/40 font-semibold mb-3">Mobilization</p>
                    {worker.assignedProjects.length > 0 ? (
                       <div className="flex flex-wrap gap-2">
                         {worker.assignedProjects.map(p => (
-                          <span key={p.project_id} className="flex items-center gap-1.5 text-xs font-semibold text-ink/70 bg-white/60 border border-white backdrop-blur rounded-full px-3 py-1 shadow-sm">
+                          <span key={p.project_id} className="flex items-center gap-1.5 text-xs font-semibold text-on-surface/70 bg-surface-container-high border border-on-surface/10 rounded-full px-3 py-1 shadow-sm">
                             <MapPin className="w-3 h-3 text-moss" />
                             {p.project_name}
                           </span>
                         ))}
                       </div>
                    ) : (
-                     <span className="text-xs text-ink/50 font-medium">Unassigned</span>
+                     <span className="text-xs text-on-surface/50 font-medium">Unassigned</span>
                    )}
                 </div>
 
                 {/* Attendance */}
                 <div className="lg:w-1/4">
-                  <p className="text-xs uppercase tracking-widest text-ink/40 font-semibold mb-3 flex items-center gap-1.5">
+                  <p className="text-xs uppercase tracking-widest text-on-surface/40 font-semibold mb-3 flex items-center gap-1.5">
                     <Calendar className="w-3.5 h-3.5" /> Validated Attendance
                   </p>
                   <div className="grid grid-cols-3 gap-2">
@@ -372,8 +372,8 @@ export function WorkerManagement() {
                 {/* Auto Salary & Productivity */}
                 <div className="flex gap-4 lg:w-1/4 lg:justify-end">
                    <div className="flex-1 text-right">
-                      <p className="text-xs uppercase tracking-widest text-ink/40 font-semibold mb-1">Computed Salary</p>
-                      <p className="text-2xl font-display font-bold text-moss">
+                      <p className="text-xs uppercase tracking-widest text-on-surface/40 font-semibold mb-1">Computed Salary</p>
+                      <p className="text-2xl font-headline font-bold text-moss">
                         PKR {worker.earnedSalary.toLocaleString()}
                       </p>
                    </div>
@@ -392,7 +392,7 @@ export function WorkerManagement() {
                          strokeWidth="3" fill="none" stroke="currentColor" strokeLinecap="round"
                        />
                      </svg>
-                     <span className="absolute font-bold text-sm text-ink">{worker.productivityScore}</span>
+                     <span className="absolute font-bold text-sm text-on-surface">{worker.productivityScore}</span>
                    </div>
                 </div>
 
@@ -405,21 +405,21 @@ export function WorkerManagement() {
               >
                 <button
                   onClick={() => handleOpenPayModal(worker)}
-                  className="p-2 text-ink/40 hover:text-emerald-500 bg-white/50 hover:bg-white rounded-full transition"
+                  className="p-2 text-on-surface/40 hover:text-emerald-500 bg-surface-container-high hover:bg-surface-container-highest rounded-full transition"
                   title="Pay Worker"
                 >
                   <Banknote className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleOpenModal(worker)}
-                  className="p-2 text-ink/40 hover:text-moss bg-white/50 hover:bg-white rounded-full transition"
+                  className="p-2 text-on-surface/40 hover:text-moss bg-surface-container-high hover:bg-surface-container-highest rounded-full transition"
                   title="Edit Worker"
                 >
                   <Edit2 className="w-4 h-4" />
                 </button>
                 <button
                   onClick={() => handleDelete(worker.id)}
-                  className="p-2 text-ink/40 hover:text-red-500 bg-white/50 hover:bg-white rounded-full transition"
+                  className="p-2 text-on-surface/40 hover:text-red-500 bg-surface-container-high hover:bg-surface-container-highest rounded-full transition"
                   title="Delete Worker"
                 >
                   <Trash2 className="w-4 h-4" />
@@ -438,45 +438,45 @@ export function WorkerManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/20 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/[0.02]0 backdrop-blur-sm"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="w-full max-w-md bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/40"
+              className="w-full max-w-md bg-surface-container rounded-2xl overflow-hidden shadow-2xl border border-on-surface/10"
             >
               <div className="p-6 relative">
                 <button 
                   onClick={() => setIsModalOpen(false)}
-                  className="absolute right-4 top-4 p-2 text-ink/40 hover:bg-ink/5 rounded-full"
+                  className="absolute right-4 top-4 p-2 text-on-surface/40 hover:bg-on-surface/5 rounded-full"
                 >
                   <X className="w-5 h-5"/>
                 </button>
                 
-                <h3 className="text-2xl font-display font-semibold mb-6">
+                <h3 className="text-2xl font-headline font-semibold mb-6">
                   {editingId ? "Edit Worker" : "Add Worker"}
                 </h3>
 
                 <form onSubmit={handleSave} className="space-y-4">
                   <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Name</label>
+                    <label className="block text-sm font-semibold text-on-surface/70 mb-1">Name</label>
                     <input
                       required
                       type="text"
-                      className="w-full bg-ink/5 border border-ink/10 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
+                      className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl px-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
                       value={formData.name}
                       onChange={(e) => setFormData(p => ({ ...p, name: e.target.value }))}
                       placeholder="E.g. Tariq Ali"
                     />
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Role</label>
+                    <label className="block text-sm font-semibold text-on-surface/70 mb-1">Role</label>
                     <div className="relative">
-                      <HardHat className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <HardHat className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                       <select
                         required
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-11 pr-10 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
+                        className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-11 pr-10 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
                         value={formData.role}
                         onChange={(e) => setFormData(p => ({ ...p, role: e.target.value }))}
                       >
@@ -491,30 +491,30 @@ export function WorkerManagement() {
                         <option value="Other">Other</option>
                       </select>
                       <div className="absolute right-4 top-1/2 -translate-y-1/2 pointer-events-none">
-                        <ChevronDown className="w-4 h-4 text-ink/50" />
+                        <ChevronDown className="w-4 h-4 text-on-surface/50" />
                       </div>
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Daily Wage (PKR)</label>
+                    <label className="block text-sm font-semibold text-on-surface/70 mb-1">Daily Wage (PKR)</label>
                     <div className="relative">
-                      <TrendingUp className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <TrendingUp className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                       <input
                         required
                         type="number"
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
+                        className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
                         value={formData.daily_wage || ""}
                         onChange={(e) => setFormData(p => ({ ...p, daily_wage: parseInt(e.target.value) || 0 }))}
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-sm font-semibold text-ink/70 mb-1">Phone Number</label>
+                    <label className="block text-sm font-semibold text-on-surface/70 mb-1">Phone Number</label>
                     <div className="relative">
-                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                       <input
                         type="tel"
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
+                        className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-11 pr-4 py-3 outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
                         value={formData.phone}
                         onChange={(e) => setFormData(p => ({ ...p, phone: e.target.value }))}
                         placeholder="+92 3XX XXXXXXX"
@@ -522,7 +522,7 @@ export function WorkerManagement() {
                     </div>
                   </div>
 
-                  <div className="pt-4 mt-2 border-t border-ink/5 flex justify-end">
+                  <div className="pt-4 mt-2 border-t border-on-surface/5 flex justify-end">
                     <button type="submit" className="bg-moss text-white px-6 py-3 rounded-xl font-semibold hover:bg-moss/90 transition shadow-lg shadow-moss/20 w-full">
                       {editingId ? "Save Changes" : "Create Worker"}
                     </button>
@@ -541,43 +541,43 @@ export function WorkerManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/30 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/30 backdrop-blur-sm"
             onClick={() => setHistoryWorker(null)}
           >
             <motion.div
               initial={{ scale: 0.96, y: 16 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.96, y: 16 }}
-              className="w-full max-w-3xl bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/40 max-h-[90vh] flex flex-col"
+              className="w-full max-w-3xl bg-surface-container rounded-2xl overflow-hidden shadow-2xl border border-on-surface/10 max-h-[90vh] flex flex-col"
               onClick={(e) => e.stopPropagation()}
             >
               {/* Header */}
               <div className="bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(54,88,71,0.88))] px-6 pt-6 pb-5 text-white shrink-0">
                 <button
                   onClick={() => setHistoryWorker(null)}
-                  className="absolute right-6 top-5 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition"
+                  className="absolute right-6 top-5 p-2 text-white/40 hover:text-white hover:bg-on-surface/10 rounded-full transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white font-display font-bold text-xl shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-on-surface/15 border border-on-surface/20 flex items-center justify-center text-white font-headline font-bold text-xl shrink-0">
                     {historyWorker.name.charAt(0)}
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold flex items-center gap-1.5">
                       <History className="w-3.5 h-3.5" /> Payment History
                     </p>
-                    <h3 className="text-xl font-display font-semibold mt-0.5">{historyWorker.name}</h3>
+                    <h3 className="text-xl font-headline font-semibold mt-0.5">{historyWorker.name}</h3>
                     <p className="text-sm text-white/60">{historyWorker.role}</p>
                   </div>
                   <div className="ml-auto flex gap-6 text-right">
                     <div>
                       <p className="text-xs text-white/50 uppercase tracking-widest">Payments</p>
-                      <p className="text-2xl font-display font-bold text-white mt-0.5">{payments.length}</p>
+                      <p className="text-2xl font-headline font-bold text-white mt-0.5">{payments.length}</p>
                     </div>
                     <div>
                       <p className="text-xs text-white/50 uppercase tracking-widest">Total Paid</p>
-                      <p className="text-2xl font-display font-bold text-emerald-300 mt-0.5">
+                      <p className="text-2xl font-headline font-bold text-emerald-300 mt-0.5">
                         PKR {payments.reduce((s, p) => s + Number(p.amount), 0).toLocaleString()}
                       </p>
                     </div>
@@ -586,14 +586,14 @@ export function WorkerManagement() {
               </div>
 
               {/* Filters */}
-              <div className="px-6 py-4 border-b border-ink/8 bg-ink/2 shrink-0 flex flex-wrap gap-3 items-center">
+              <div className="px-6 py-4 border-b border-on-surface/8 bg-on-surface/[0.02] shrink-0 flex flex-wrap gap-3 items-center">
                 {/* Search */}
                 <div className="relative flex-1 min-w-[160px]">
-                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                  <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                   <input
                     type="text"
                     placeholder="Search invoice or description…"
-                    className="w-full bg-white border border-ink/10 rounded-xl pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/30 transition"
+                    className="w-full bg-surface-container-high border border-on-surface/10 rounded-xl pl-9 pr-3 py-2 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/30 transition"
                     value={filterSearch}
                     onChange={(e) => setFilterSearch(e.target.value)}
                   />
@@ -601,9 +601,9 @@ export function WorkerManagement() {
 
                 {/* Project filter */}
                 <div className="relative min-w-[160px]">
-                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink/40" />
+                  <Filter className="absolute left-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-on-surface/40" />
                   <select
-                    className="w-full bg-white border border-ink/10 rounded-xl pl-9 pr-8 py-2 text-sm outline-none focus:ring-2 focus:ring-moss/20 appearance-none"
+                    className="w-full bg-surface-container-high border border-on-surface/10 rounded-xl pl-9 pr-8 py-2 text-sm outline-none focus:ring-2 focus:ring-moss/20 appearance-none"
                     value={filterProject}
                     onChange={(e) => setFilterProject(e.target.value)}
                   >
@@ -612,7 +612,7 @@ export function WorkerManagement() {
                       <option key={name!} value={name!}>{name}</option>
                     ))}
                   </select>
-                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-ink/40 pointer-events-none" />
+                  <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-3.5 h-3.5 text-on-surface/40 pointer-events-none" />
                 </div>
 
                 {/* Status filter */}
@@ -624,8 +624,8 @@ export function WorkerManagement() {
                       className={cn(
                         "px-3 py-1.5 rounded-full text-xs font-semibold transition",
                         filterStatus === s
-                          ? "bg-ink text-white"
-                          : "bg-ink/5 text-ink/60 hover:bg-ink/10"
+                          ? "bg-on-surface text-surface-container"
+                          : "bg-on-surface/5 text-on-surface-variant hover:bg-on-surface/10"
                       )}
                     >
                       {s === "all" ? "All Status" : s}
@@ -637,7 +637,7 @@ export function WorkerManagement() {
               {/* Grid */}
               <div className="overflow-y-auto flex-1">
                 {paymentsLoading ? (
-                  <div className="flex items-center justify-center h-40 text-ink/40 text-sm">Loading…</div>
+                  <div className="flex items-center justify-center h-40 text-on-surface/40 text-sm">Loading…</div>
                 ) : (() => {
                   const filtered = payments.filter(p => {
                     if (filterProject !== "all" && p.project_name !== filterProject) return false;
@@ -655,7 +655,7 @@ export function WorkerManagement() {
 
                   if (filtered.length === 0) {
                     return (
-                      <div className="flex flex-col items-center justify-center h-40 text-ink/40 gap-2">
+                      <div className="flex flex-col items-center justify-center h-40 text-on-surface/40 gap-2">
                         <Receipt className="w-8 h-8 opacity-40" />
                         <p className="text-sm font-medium">No payments match the filters</p>
                       </div>
@@ -664,10 +664,10 @@ export function WorkerManagement() {
 
                   return (
                     <table className="w-full text-sm">
-                      <thead className="sticky top-0 bg-white border-b border-ink/8">
+                      <thead className="sticky top-0 bg-surface-container border-b border-on-surface/8">
                         <tr>
                           {["Invoice #", "Date", "Project", "Client", "Amount", "Status"].map(h => (
-                            <th key={h} className="px-5 py-3 text-left text-[11px] uppercase tracking-widest text-ink/40 font-bold">
+                            <th key={h} className="px-5 py-3 text-left text-[11px] uppercase tracking-widest text-on-surface/40 font-bold">
                               {h}
                             </th>
                           ))}
@@ -678,14 +678,14 @@ export function WorkerManagement() {
                           <tr
                             key={p.expense_id}
                             className={cn(
-                              "border-b border-ink/5 transition-colors hover:bg-moss/5",
-                              i % 2 === 0 ? "bg-white" : "bg-ink/[0.015]"
+                              "border-b border-on-surface/5 transition-colors hover:bg-moss/5",
+                              i % 2 === 0 ? "bg-surface-container" : "bg-on-surface/[0.015]"
                             )}
                           >
-                            <td className="px-5 py-3.5 font-mono text-xs text-ink/70">
+                            <td className="px-5 py-3.5 font-mono text-xs text-on-surface/70">
                               {p.invoice_number ?? <span className="text-ink/30">—</span>}
                             </td>
-                            <td className="px-5 py-3.5 text-ink/70 whitespace-nowrap">
+                            <td className="px-5 py-3.5 text-on-surface/70 whitespace-nowrap">
                               {new Date(p.expense_date).toLocaleDateString("en-PK", {
                                 day: "2-digit", month: "short", year: "numeric"
                               })}
@@ -695,10 +695,10 @@ export function WorkerManagement() {
                                 ? <span className="flex items-center gap-1.5"><MapPin className="w-3 h-3 text-moss shrink-0" />{p.project_name}</span>
                                 : <span className="text-ink/30">—</span>}
                             </td>
-                            <td className="px-5 py-3.5 text-ink/70">
+                            <td className="px-5 py-3.5 text-on-surface/70">
                               {p.client_name ?? <span className="text-ink/30">—</span>}
                             </td>
-                            <td className="px-5 py-3.5 font-display font-semibold text-moss">
+                            <td className="px-5 py-3.5 font-headline font-semibold text-moss">
                               PKR {Number(p.amount).toLocaleString()}
                             </td>
                             <td className="px-5 py-3.5">
@@ -724,8 +724,8 @@ export function WorkerManagement() {
               </div>
 
               {/* Footer total for filtered set */}
-              <div className="px-6 py-3 border-t border-ink/8 bg-ink/2 shrink-0 flex justify-between items-center">
-                <span className="text-xs text-ink/40 font-medium">
+              <div className="px-6 py-3 border-t border-on-surface/8 bg-on-surface/[0.02] shrink-0 flex justify-between items-center">
+                <span className="text-xs text-on-surface/40 font-medium">
                   {(() => {
                     const count = payments.filter(p => {
                       if (filterProject !== "all" && p.project_name !== filterProject) return false;
@@ -741,7 +741,7 @@ export function WorkerManagement() {
                     return `${count} record${count !== 1 ? "s" : ""}`;
                   })()}
                 </span>
-                <span className="text-sm font-display font-bold text-ink">
+                <span className="text-sm font-headline font-bold text-on-surface">
                   Filtered total: PKR {payments.filter(p => {
                     if (filterProject !== "all" && p.project_name !== filterProject) return false;
                     if (filterStatus !== "all" && p.invoice_status !== filterStatus) return false;
@@ -767,35 +767,35 @@ export function WorkerManagement() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-ink/30 backdrop-blur-sm"
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-on-surface/30 backdrop-blur-sm"
           >
             <motion.div
               initial={{ scale: 0.95, y: 20 }}
               animate={{ scale: 1, y: 0 }}
               exit={{ scale: 0.95, y: 20 }}
-              className="w-full max-w-lg bg-white rounded-3xl overflow-hidden shadow-2xl border border-white/40"
+              className="w-full max-w-lg bg-surface-container rounded-2xl overflow-hidden shadow-2xl border border-on-surface/10"
             >
               {/* Modal header — worker identity strip */}
               <div className="bg-[linear-gradient(135deg,rgba(15,23,42,0.96),rgba(54,88,71,0.88))] px-6 pt-6 pb-5 text-white relative">
                 <button
                   onClick={() => setIsPayModalOpen(false)}
-                  className="absolute right-4 top-4 p-2 text-white/40 hover:text-white hover:bg-white/10 rounded-full transition"
+                  className="absolute right-4 top-4 p-2 text-white/40 hover:text-white hover:bg-on-surface/10 rounded-full transition"
                 >
                   <X className="w-5 h-5" />
                 </button>
 
                 <div className="flex items-center gap-4">
-                  <div className="w-12 h-12 rounded-full bg-white/15 border border-white/20 flex items-center justify-center text-white font-display font-bold text-xl shrink-0">
+                  <div className="w-12 h-12 rounded-full bg-on-surface/15 border border-on-surface/20 flex items-center justify-center text-white font-headline font-bold text-xl shrink-0">
                     {payWorkerTarget.name.charAt(0)}
                   </div>
                   <div>
                     <p className="text-xs uppercase tracking-[0.2em] text-white/50 font-semibold">Process Payment</p>
-                    <h3 className="text-xl font-display font-semibold mt-0.5">{payWorkerTarget.name}</h3>
+                    <h3 className="text-xl font-headline font-semibold mt-0.5">{payWorkerTarget.name}</h3>
                     <p className="text-sm text-white/60 mt-0.5">{payWorkerTarget.role}</p>
                   </div>
                   <div className="ml-auto text-right">
                     <p className="text-xs text-white/50 uppercase tracking-widest">Computed Salary</p>
-                    <p className="text-2xl font-display font-bold text-emerald-300 mt-0.5">
+                    <p className="text-2xl font-headline font-bold text-emerald-300 mt-0.5">
                       PKR {(payWorkerTarget.earnedSalary || 0).toLocaleString()}
                     </p>
                   </div>
@@ -808,26 +808,26 @@ export function WorkerManagement() {
                 {/* Row: Amount + Date */}
                 <div className="grid grid-cols-2 gap-3">
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Amount (PKR)</label>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-1.5">Amount (PKR)</label>
                     <div className="relative">
-                      <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <Banknote className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                       <input
                         required
                         type="number"
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition font-semibold"
+                        className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition font-semibold"
                         value={payFormData.amount || ""}
                         onChange={(e) => setPayFormData(p => ({ ...p, amount: parseInt(e.target.value) || 0 }))}
                       />
                     </div>
                   </div>
                   <div>
-                    <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Payment Date</label>
+                    <label className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-1.5">Payment Date</label>
                     <div className="relative">
-                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                      <Calendar className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                       <input
                         required
                         type="date"
-                        className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
+                        className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition"
                         value={payFormData.paymentDate}
                         onChange={(e) => setPayFormData(p => ({ ...p, paymentDate: e.target.value }))}
                       />
@@ -837,12 +837,12 @@ export function WorkerManagement() {
 
                 {/* Project selector — all active projects */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">Charge to Project</label>
+                  <label className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-1.5">Charge to Project</label>
                   <div className="relative">
-                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                    <Building2 className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                     <select
                       required
-                      className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-8 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
+                      className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-10 pr-8 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
                       value={payFormData.projectId}
                       onChange={(e) => setPayFormData(p => ({ ...p, projectId: parseInt(e.target.value) || 0 }))}
                     >
@@ -853,7 +853,7 @@ export function WorkerManagement() {
                         </option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40 pointer-events-none" />
                   </div>
                   {projects.length === 0 && (
                     <p className="text-xs text-amber-600 mt-1.5 font-medium">No projects found — create a project first.</p>
@@ -862,14 +862,14 @@ export function WorkerManagement() {
 
                 {/* Client selector — invoice billing target */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-1.5">
                     Bill Invoice To (Client)
                   </label>
                   <div className="relative">
-                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40" />
+                    <Users className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40" />
                     <select
                       required
-                      className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-8 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
+                      className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-10 pr-8 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition appearance-none"
                       value={payFormData.clientId}
                       onChange={(e) => setPayFormData(p => ({ ...p, clientId: parseInt(e.target.value) || 0 }))}
                     >
@@ -878,7 +878,7 @@ export function WorkerManagement() {
                         <option key={c.id} value={c.id}>{c.name}</option>
                       ))}
                     </select>
-                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-ink/40 pointer-events-none" />
+                    <ChevronDown className="absolute right-3 top-1/2 -translate-y-1/2 w-4 h-4 text-on-surface/40 pointer-events-none" />
                   </div>
                   {clients.length === 0 && (
                     <p className="text-xs text-amber-600 mt-1.5 font-medium">No clients loaded — add clients first to generate an invoice.</p>
@@ -887,15 +887,15 @@ export function WorkerManagement() {
 
                 {/* Invoice description */}
                 <div>
-                  <label className="block text-xs font-bold uppercase tracking-widest text-ink/50 mb-1.5">
+                  <label className="block text-xs font-bold uppercase tracking-widest text-on-surface/50 mb-1.5">
                     Invoice Description
                   </label>
                   <div className="relative">
-                    <FileText className="absolute left-3 top-3 w-4 h-4 text-ink/40" />
+                    <FileText className="absolute left-3 top-3 w-4 h-4 text-on-surface/40" />
                     <textarea
                       required
                       rows={2}
-                      className="w-full bg-ink/5 border border-ink/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition resize-none"
+                      className="w-full bg-on-surface/5 border border-on-surface/10 rounded-xl pl-10 pr-3 py-2.5 text-sm outline-none focus:ring-2 focus:ring-moss/20 focus:border-moss/40 transition resize-none"
                       value={payFormData.invoiceDescription}
                       onChange={(e) => setPayFormData(p => ({ ...p, invoiceDescription: e.target.value }))}
                       placeholder="e.g. Labour payment — site supervision, week of April 6"
@@ -915,24 +915,24 @@ export function WorkerManagement() {
                       <span className="text-xs font-bold uppercase tracking-widest text-moss">Invoice Preview</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-ink/50">Worker</span>
-                      <span className="font-semibold text-ink">{payWorkerTarget.name}</span>
+                      <span className="text-on-surface/50">Worker</span>
+                      <span className="font-semibold text-on-surface">{payWorkerTarget.name}</span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-ink/50">Project</span>
-                      <span className="font-semibold text-ink">
+                      <span className="text-on-surface/50">Project</span>
+                      <span className="font-semibold text-on-surface">
                         {projects.find(p => p.id === payFormData.projectId)?.name ?? "—"}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm">
-                      <span className="text-ink/50">Client</span>
-                      <span className="font-semibold text-ink">
+                      <span className="text-on-surface/50">Client</span>
+                      <span className="font-semibold text-on-surface">
                         {clients.find(c => c.id === payFormData.clientId)?.name ?? "—"}
                       </span>
                     </div>
                     <div className="flex justify-between text-sm border-t border-moss/20 pt-2 mt-2">
-                      <span className="text-ink/50">Total Billed</span>
-                      <span className="font-display font-bold text-moss text-base">
+                      <span className="text-on-surface/50">Total Billed</span>
+                      <span className="font-headline font-bold text-moss text-base">
                         PKR {payFormData.amount.toLocaleString()}
                       </span>
                     </div>
@@ -942,7 +942,7 @@ export function WorkerManagement() {
                 <div className="pt-2">
                   <button
                     type="submit"
-                    className="bg-[#0f172a] text-white px-6 py-3 rounded-xl font-semibold hover:bg-moss transition shadow-lg w-full flex items-center justify-center gap-2 text-sm"
+                    className="gold-gradient text-[#3d2f00] px-6 py-3 rounded-xl font-semibold hover:scale-105 transition shadow-lg w-full flex items-center justify-center gap-2 text-sm"
                   >
                     <Banknote className="w-4 h-4" />
                     Process Payment &amp; Generate Invoice

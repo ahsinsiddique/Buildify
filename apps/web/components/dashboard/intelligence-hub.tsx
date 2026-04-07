@@ -53,13 +53,13 @@ const GlassCard = ({ children, className }: { children: React.ReactNode; classNa
     whileHover={{ y: -4, transition: { duration: 0.3 } }}
     className={cn(
       "relative overflow-hidden p-6",
-      "bg-surface-container border border-white/5",
+      "bg-surface-container border border-on-surface/7",
       "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]",
       "transition-all duration-300",
       className
     )}
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/3 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-gradient-to-br from-on-surface/3 to-transparent pointer-events-none" />
     <div className="relative z-10">{children}</div>
   </motion.div>
 );

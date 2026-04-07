@@ -17,6 +17,25 @@ function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+/** Watches the <html> dark class and returns chart-safe color values */
+function useChartColors() {
+  const [isDark, setIsDark] = React.useState(true);
+  React.useEffect(() => {
+    const check = () => setIsDark(document.documentElement.classList.contains("dark"));
+    check();
+    const observer = new MutationObserver(check);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["class"] });
+    return () => observer.disconnect();
+  }, []);
+  return {
+    grid:         isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.06)",
+    tick:         isDark ? "#d0c5af"                : "#5c5349",
+    tooltipBg:    isDark ? "rgba(17,17,17,0.97)"   : "rgba(250,248,244,0.97)",
+    tooltipBorder:isDark ? "rgba(255,255,255,0.05)" : "rgba(0,0,0,0.08)",
+    tooltipColor: isDark ? "#e5e2e1"                : "#1a1714",
+  };
+}
+
 // Mock Data
 const cashFlowData = [
   { month: "Jan", income: 45000, expenses: 32000 },
@@ -69,19 +88,20 @@ const GlassCard = ({ children, className }: { children: React.ReactNode; classNa
     whileHover={{ y: -4, transition: { duration: 0.3, ease: "easeOut" } }}
     className={cn(
       "relative overflow-hidden p-6",
-      "bg-surface-container border border-white/5",
+      "bg-surface-container border border-on-surface/7",
       "shadow-[0_20px_40px_-15px_rgba(0,0,0,0.5)]",
       "transition-all duration-300",
       className
     )}
   >
-    <div className="absolute inset-0 bg-gradient-to-br from-white/3 to-transparent pointer-events-none" />
+    <div className="absolute inset-0 bg-gradient-to-br from-on-surface/3 to-transparent pointer-events-none" />
     <div className="relative z-10 h-full w-full">{children}</div>
   </motion.div>
 );
 
 export function FinancialDashboard() {
   const [mounted, setMounted] = useState(false);
+  const chart = useChartColors();
 
   useEffect(() => {
     setMounted(true);
@@ -106,7 +126,7 @@ export function FinancialDashboard() {
             <p className="text-on-surface-variant mt-2 text-lg font-light">Real-time tracking, profit/loss, and expense insights.</p>
           </div>
           <div className="flex gap-3">
-            <button className="px-6 py-3 border border-white/10 bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all font-medium text-sm">
+            <button className="px-6 py-3 border border-on-surface/10 bg-surface-container-high text-on-surface-variant hover:text-on-surface transition-all font-medium text-sm">
               Export PDF
             </button>
             <button className="px-6 py-3 gold-gradient text-on-primary hover:scale-105 transition-all font-bold text-sm uppercase tracking-[0.2em]">
@@ -176,13 +196,13 @@ export function FinancialDashboard() {
           <GlassCard className="lg:col-span-2 min-h-[400px] flex flex-col">
             <div className="flex items-center justify-between mb-6">
               <div>
-                <h3 className="text-xl font-semibold text-ink flex items-center gap-2">
+                <h3 className="text-xl font-semibold text-on-surface flex items-center gap-2">
                   <TrendingUp size={20} className="text-moss" />
                   Cash Flow Tracking
                 </h3>
-                <p className="text-sm text-ink/60 mt-1">Income vs Expenses over time</p>
+                <p className="text-sm text-on-surface-variant mt-1">Income vs Expenses over time</p>
               </div>
-              <select className="bg-surface-container-high border border-white/10 px-4 py-2 text-sm text-on-surface-variant font-medium outline-none cursor-pointer">
+              <select className="bg-surface-container-high border border-on-surface/10 px-4 py-2 text-sm text-on-surface-variant font-medium outline-none cursor-pointer">
                 <option>Last 7 Months</option>
                 <option>This Year</option>
                 <option>All Time</option>
@@ -201,12 +221,12 @@ export function FinancialDashboard() {
                       <stop offset="95%" stopColor="#bb6b3f" stopOpacity={0}/>
                     </linearGradient>
                   </defs>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
+                  <XAxis dataKey="month" axisLine={false} tickLine={false} tick={{fill: chart.tick, fontSize: 12}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: chart.tick, fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
                   <RechartsTooltip
-                    contentStyle={{ borderRadius: '0px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', background: 'rgba(17,17,17,0.97)' }}
-                    itemStyle={{ color: '#e5e2e1', fontWeight: 500 }}
+                    contentStyle={{ borderRadius: '0px', border: `1px solid ${chart.tooltipBorder}`, boxShadow: '0 10px 25px rgba(0,0,0,0.3)', background: chart.tooltipBg }}
+                    itemStyle={{ color: chart.tooltipColor, fontWeight: 500 }}
                   />
                   <Area type="monotone" dataKey="income" stroke="#f3ca50" strokeWidth={2} fillOpacity={1} fill="url(#colorIncome)" />
                   <Area type="monotone" dataKey="expenses" stroke="#bb6b3f" strokeWidth={2} fillOpacity={1} fill="url(#colorExpense)" />
@@ -243,7 +263,7 @@ export function FinancialDashboard() {
                   </Pie>
                   <RechartsTooltip
                     formatter={(value: number) => `$${value.toLocaleString()}`}
-                    contentStyle={{ borderRadius: '0px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 4px 20px rgba(0,0,0,0.5)', background: 'rgba(17,17,17,0.97)', color: '#e5e2e1' }}
+                    contentStyle={{ borderRadius: '0px', border: `1px solid ${chart.tooltipBorder}`, boxShadow: '0 4px 20px rgba(0,0,0,0.3)', background: chart.tooltipBg, color: chart.tooltipColor }}
                   />
                 </PieChart>
               </ResponsiveContainer>
@@ -275,15 +295,15 @@ export function FinancialDashboard() {
             <div className="w-full h-[300px]">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={projectProfitData} margin={{ top: 0, right: 0, left: -20, bottom: 0 }}>
-                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke="rgba(255,255,255,0.05)" />
-                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} dy={10} />
-                  <YAxis axisLine={false} tickLine={false} tick={{fill: "#d0c5af", fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
+                  <CartesianGrid strokeDasharray="3 3" vertical={false} stroke={chart.grid} />
+                  <XAxis dataKey="name" axisLine={false} tickLine={false} tick={{fill: chart.tick, fontSize: 12}} dy={10} />
+                  <YAxis axisLine={false} tickLine={false} tick={{fill: chart.tick, fontSize: 12}} tickFormatter={(value) => `$${value/1000}k`} />
                   <RechartsTooltip
-                    cursor={{fill: 'rgba(255,255,255,0.03)'}}
-                    contentStyle={{ borderRadius: '0px', border: '1px solid rgba(255,255,255,0.05)', boxShadow: '0 10px 25px rgba(0,0,0,0.5)', background: 'rgba(17,17,17,0.97)', color: '#e5e2e1' }}
+                    cursor={{fill: 'rgba(128,128,128,0.05)'}}
+                    contentStyle={{ borderRadius: '0px', border: `1px solid ${chart.tooltipBorder}`, boxShadow: '0 10px 25px rgba(0,0,0,0.3)', background: chart.tooltipBg, color: chart.tooltipColor }}
                     formatter={(value: number) => `$${value.toLocaleString()}`}
                   />
-                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', color: '#d0c5af' }} />
+                  <Legend iconType="circle" wrapperStyle={{ paddingTop: '20px', color: chart.tick }} />
                   <Bar dataKey="profit" name="Profit" fill="#f3ca50" radius={[0, 0, 0, 0]} />
                   <Bar dataKey="loss" name="Loss" fill="#bb6b3f" radius={[0, 0, 0, 0]} />
                 </BarChart>

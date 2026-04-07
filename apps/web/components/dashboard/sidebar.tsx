@@ -11,7 +11,7 @@ export function Sidebar() {
   const pathname = usePathname();
 
   return (
-    <aside className="w-full border-b border-white/5 bg-[#050505] p-5 text-white lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r lg:border-white/5">
+    <aside className="w-full border-b border-on-surface/7 bg-surface-container-lowest p-5 lg:min-h-screen lg:w-72 lg:border-b-0 lg:border-r lg:border-on-surface/7">
       <div className="mb-10">
         <div className="flex items-center gap-3 mb-4">
           <Image
@@ -22,11 +22,11 @@ export function Sidebar() {
             className="object-contain"
           />
           <div>
-            <p className="text-[9px] uppercase tracking-[0.4em] text-white/40 font-bold">{appConfig.appTag}</p>
-            <h1 className="font-headline font-black text-xl tracking-tighter text-white">{appConfig.appName}</h1>
+            <p className="text-[9px] uppercase tracking-[0.4em] text-on-surface/40 font-bold">{appConfig.appTag}</p>
+            <h1 className="font-headline font-black text-xl tracking-tighter text-on-surface">{appConfig.appName}</h1>
           </div>
         </div>
-        <p className="text-xs text-white/30 leading-relaxed tracking-wide">
+        <p className="text-xs text-on-surface/30 leading-relaxed tracking-wide">
           Construction, property, CRM, and finance in one control panel.
         </p>
       </div>
@@ -41,8 +41,8 @@ export function Sidebar() {
               href={item.href}
               className={`px-4 py-3 text-[10px] font-bold uppercase tracking-[0.25em] transition-all ${
                 active
-                  ? "bg-primary text-on-primary"
-                  : "text-white/50 hover:bg-white/5 hover:text-white"
+                  ? "gold-gradient text-[#3d2f00]"
+                  : "text-on-surface/50 hover:bg-on-surface/5 hover:text-on-surface"
               }`}
             >
               {item.label}

@@ -49,7 +49,7 @@ export function AuthForm() {
 
   return (
     <div className="mx-auto grid min-h-[calc(100vh-65px)] max-w-6xl items-center gap-10 px-6 py-12 lg:grid-cols-[0.95fr_1.05fr] lg:px-8">
-      <div className="border border-white/5 bg-surface-container p-8 text-white relative overflow-hidden">
+      <div className="border border-on-surface/7 bg-surface-container p-8 relative overflow-hidden">
         <div className="pointer-events-none absolute inset-x-0 top-0 h-32 bg-[radial-gradient(circle_at_top_left,rgba(243,202,80,0.08),transparent_60%)]" />
         <div className="relative">
           <p className="text-[9px] uppercase tracking-[0.5em] text-primary font-bold mb-6">{appConfig.appName} ERP</p>
@@ -57,24 +57,24 @@ export function AuthForm() {
             Sign in to manage projects, plots, costs, and teams.
           </h1>
           <div className="mt-8 space-y-3 text-sm text-on-surface-variant">
-            <div className="border border-white/5 bg-white/3 p-4">
+            <div className="border border-on-surface/7 bg-on-surface/3 p-4">
               Authenticated users can access the dashboard and CRUD workflows.
             </div>
-            <div className="border border-white/5 bg-white/3 p-4">
+            <div className="border border-on-surface/7 bg-on-surface/3 p-4">
               Managers can create operational records. Admins can delete records.
             </div>
-            <div className="border border-white/5 bg-white/3 p-4">
+            <div className="border border-on-surface/7 bg-on-surface/3 p-4">
               New accounts can register here and immediately enter the dashboard.
             </div>
           </div>
         </div>
       </div>
 
-      <div className="border border-white/5 bg-surface-container p-8">
+      <div className="border border-on-surface/7 bg-surface-container p-8">
         <div className="mb-6 flex gap-2">
           <button
             className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em] transition-all ${
-              mode === "login" ? "gold-gradient text-on-primary" : "border border-white/10 text-on-surface-variant hover:text-on-surface"
+              mode === "login" ? "gold-gradient text-[#3d2f00]" : "border border-on-surface/10 text-on-surface-variant hover:text-on-surface"
             }`}
             onClick={() => setMode("login")}
             type="button"
@@ -83,7 +83,7 @@ export function AuthForm() {
           </button>
           <button
             className={`px-5 py-2 text-[10px] font-bold uppercase tracking-[0.25em] transition-all ${
-              mode === "signup" ? "gold-gradient text-on-primary" : "border border-white/10 text-on-surface-variant hover:text-on-surface"
+              mode === "signup" ? "gold-gradient text-[#3d2f00]" : "border border-on-surface/10 text-on-surface-variant hover:text-on-surface"
             }`}
             onClick={() => setMode("signup")}
             type="button"
@@ -97,7 +97,7 @@ export function AuthForm() {
             <label className="grid gap-2 text-sm text-on-surface-variant">
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Full name</span>
               <input
-                className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+                className="border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                 onChange={(event) => setName(event.target.value)}
                 required
                 value={name}
@@ -108,7 +108,7 @@ export function AuthForm() {
           <label className="grid gap-2 text-sm text-on-surface-variant">
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Email</span>
             <input
-              className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+              className="border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
               onChange={(event) => setEmail(event.target.value)}
               required
               type="email"
@@ -119,7 +119,7 @@ export function AuthForm() {
           <label className="grid gap-2 text-sm text-on-surface-variant">
             <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Password</span>
             <input
-              className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+              className="border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
               onChange={(event) => setPassword(event.target.value)}
               required
               type="password"
@@ -131,7 +131,7 @@ export function AuthForm() {
             <label className="grid gap-2 text-sm text-on-surface-variant">
               <span className="text-[10px] uppercase tracking-[0.3em] font-bold">Role</span>
               <select
-                className="border border-white/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
+                className="border border-on-surface/10 bg-surface-container-high text-on-surface px-4 py-3 outline-none transition focus:border-primary"
                 onChange={(event) => setRole(event.target.value)}
                 value={role}
               >
@@ -150,7 +150,7 @@ export function AuthForm() {
           ) : null}
 
           <button
-            className="gold-gradient text-on-primary px-5 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition hover:scale-105 disabled:opacity-60"
+            className="gold-gradient text-[#3d2f00] px-5 py-3 text-[10px] font-bold uppercase tracking-[0.3em] transition hover:scale-105 disabled:opacity-60"
             disabled={isSubmitting}
             type="submit"
           >
