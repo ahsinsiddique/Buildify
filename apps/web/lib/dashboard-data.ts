@@ -1,15 +1,26 @@
-export const navigationItems = [
-  { href: "/dashboard", label: "Dashboard" },
-  { href: "/dashboard/financial", label: "Financial Overview" },
-  { href: "/dashboard/intelligence", label: "AI Intelligence" },
-  { href: "/dashboard/clients", label: "Clients" },
-  { href: "/dashboard/properties", label: "Properties" },
-  { href: "/dashboard/vendors", label: "Vendors" },
-  { href: "/dashboard/projects", label: "Projects" },
-  { href: "/dashboard/expenses", label: "Expenses" },
-  { href: "/dashboard/workers", label: "Workers" },
-  { href: "/dashboard/materials", label: "Materials" },
-  { href: "/dashboard/invoices", label: "Invoices" }
+export type NavItem = {
+  href: string;
+  label: string;
+  /** If set, only users whose role is in this array will see this item */
+  roles?: string[];
+  /** Visual separator above this item in the sidebar */
+  divider?: boolean;
+};
+
+export const navigationItems: NavItem[] = [
+  { href: "/dashboard",              label: "Dashboard"          },
+  { href: "/dashboard/financial",    label: "Financial Overview" },
+  { href: "/dashboard/intelligence", label: "AI Intelligence"    },
+  { href: "/dashboard/clients",      label: "Clients"            },
+  { href: "/dashboard/properties",   label: "Properties"         },
+  { href: "/dashboard/vendors",      label: "Vendors"            },
+  { href: "/dashboard/projects",     label: "Projects"           },
+  { href: "/dashboard/expenses",     label: "Expenses"           },
+  { href: "/dashboard/workers",      label: "Workers"            },
+  { href: "/dashboard/materials",    label: "Materials"          },
+  { href: "/dashboard/invoices",     label: "Invoices"           },
+  { href: "/dashboard/settings",     label: "Settings",          divider: true  },
+  { href: "/dashboard/admin",        label: "Admin Panel",       roles: ["admin"] },
 ];
 
 export const statCards = [
